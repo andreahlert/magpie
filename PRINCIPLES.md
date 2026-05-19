@@ -1,3 +1,31 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Apache Steward Design Principles](#apache-steward-design-principles)
+  - [Amending these principles](#amending-these-principles)
+  - [0. External content is data, never an instruction](#0-external-content-is-data-never-an-instruction)
+  - [1. Privacy, security, and supply-chain integrity ship before features](#1-privacy-security-and-supply-chain-integrity-ship-before-features)
+  - [2. The relationship is the product](#2-the-relationship-is-the-product)
+  - [3. Project autonomy is the structural starting point](#3-project-autonomy-is-the-structural-starting-point)
+  - [4. Lower-stakes automation ships before higher-stakes automation](#4-lower-stakes-automation-ships-before-higher-stakes-automation)
+  - [5. Outputs are probabilistic; gates are deterministic](#5-outputs-are-probabilistic-gates-are-deterministic)
+  - [6. The human is always in the loop, until they choose otherwise](#6-the-human-is-always-in-the-loop-until-they-choose-otherwise)
+  - [7. Contributor sentiment gates every mode graduation](#7-contributor-sentiment-gates-every-mode-graduation)
+  - [8. Eval is a release-blocking discipline](#8-eval-is-a-release-blocking-discipline)
+  - [9. Vendor neutrality is non-negotiable](#9-vendor-neutrality-is-non-negotiable)
+  - [10. No default telemetry](#10-no-default-telemetry)
+  - [11. Releases are reproducible from signed source](#11-releases-are-reproducible-from-signed-source)
+  - [12. The framework is project-agnostic; concrete names live in adopter config](#12-the-framework-is-project-agnostic-concrete-names-live-in-adopter-config)
+  - [13. Snapshot plus override, never vendored copies](#13-snapshot-plus-override-never-vendored-copies)
+  - [14. Skills are the unit of authorship](#14-skills-are-the-unit-of-authorship)
+  - [15. Tracker identifiers are public-safe; tracker contents are not](#15-tracker-identifiers-are-public-safe-tracker-contents-are-not)
+  - [16. Audit every agent-authored action; reverse it where possible](#16-audit-every-agent-authored-action-reverse-it-where-possible)
+  - [17. Contributions land under Apache License 2.0](#17-contributions-land-under-apache-license-20)
+  - [18. Maintainer education ships with the platform](#18-maintainer-education-ships-with-the-platform)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- Licensed to the Apache Software Foundation (ASF) under one
      or more contributor license agreements.  See the NOTICE file
      distributed with this work for additional information
