@@ -83,3 +83,31 @@ jobs:
         # needs because each project's `pyproject.toml` declares
         # `testpaths = ["tests"]` relative to its own root.
         run: uv run --directory ${{ matrix.project.path }} --group dev pytest --color=yes
+
+  # Umbrella status check. `.asf.yaml`'s `required_status_checks`
+  # cannot use patterns or wildcards (GitHub's branch-protection and
+  # rulesets APIs both require exact context names), so a matrix job
+  # with N entries would otherwise force N `.asf.yaml` lines that
+  # must be kept in lock-step with the matrix. This single
+  # `tests-ok` job is the only pytest-related context required by
+  # branch protection — it passes iff every entry in the `pytest`
+  # matrix above passed. Adding, renaming, or removing matrix
+  # entries no longer touches `.asf.yaml`.
+  tests-ok:
+    name: tests-ok
+    runs-on: ubuntu-latest
+    needs: pytest
+    # `always()` — without it, this job would be skipped (not
+    # failed) when an upstream matrix entry fails, and a skipped
+    # required-check is treated as missing by branch protection,
+    # which leaves the PR mergeable. Run unconditionally and assert
+    # on the result instead.
+    if: always()
+    steps:
+      - name: Assert all pytest matrix entries succeeded
+        run: |
+          if [ "${{ needs.pytest.result }}" != "success" ]; then
+            echo "pytest matrix result: ${{ needs.pytest.result }}"
+            exit 1
+          fi
+          echo "all pytest matrix entries passed"

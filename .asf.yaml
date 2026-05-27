@@ -161,16 +161,16 @@ github:
           # the PR. The daily schedule run still catches drift on
           # files the PR did not touch.
           - "lychee"
-          # Per-project pytest matrix from tests.yml. Mirrors the
-          # `matrix.project[].name` list there; keep these two
-          # lists in sync when projects are added or renamed.
-          - "pytest (oauth-draft)"
-          - "pytest (generate-cve-json)"
-          - "pytest (skill-validator)"
-          - "pytest (privacy-llm-checker)"
-          - "pytest (privacy-llm-redactor)"
-          - "pytest (vulnogram-oauth-api)"
-          - "pytest (sandbox-lint)"
+          # Per-project pytest matrix from tests.yml. Required via
+          # the single `tests-ok` umbrella job rather than the
+          # individual `pytest (<project>)` matrix entries — branch
+          # protection and rulesets both require exact-match status
+          # check names, so listing matrix entries here would force
+          # an `.asf.yaml` change on every matrix add / rename /
+          # removal. `tests-ok` `needs:` every matrix entry and
+          # fails unless all succeed, so the gate semantics are the
+          # same.
+          - "tests-ok"
       # `required_pull_request_reviews:` deliberately omitted — see
       # the TEMPORARY POSTURE note above. Re-add at PMC formation.
       #
