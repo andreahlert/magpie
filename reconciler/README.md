@@ -8,8 +8,10 @@ This directory is built up across the PR sequence tracked in [issue #1](https://
 
 | PR | Drop |
 |---|---|
-| PR 1 (this PR) | `schemas/` (intent, lock, skill manifest) + `validate_taxonomy.py` |
-| PR 5 | `resolve.py`, `plan.py`, CLI entry point in `plan` mode |
+| PR 1 | `schemas/` (intent, lock, skill manifest) + `validate_taxonomy.py` |
+| PR 2 | First manifest + `validate_manifests.py` |
+| PR 4 | `build_registry.py` + `registry/skills-index.json` + CI workflow |
+| PR 5 (this PR) | `resolve.py`, `plan.py`, `__main__.py` CLI in `plan` mode, tests |
 | PR 6 | `apply.py` behind `--experimental` |
 | PR 7 | Jinja2 template rendering hooked into `apply` |
 
@@ -34,10 +36,48 @@ The reconciler is the **only** place capability resolution lives. Keeping the en
 ## Running today
 
 ```bash
-python reconciler/validate_taxonomy.py
+# Validate the canonical taxonomy
+uv run --with pyyaml python reconciler/validate_taxonomy.py
+
+# Validate every skill manifest against schema + taxonomy
+uv run --with pyyaml --with jsonschema python reconciler/validate_manifests.py
+
+# Rebuild the registry from manifests (use --check in CI)
+uv run --with pyyaml python reconciler/build_registry.py --stable-timestamp
+
+# Generate a plan against an intent file
+uv run --with pyyaml --with jsonschema python -m reconciler plan \
+  --intent path/to/.apache-steward.intent.yaml \
+  --lock path/to/.apache-steward.lock
+
+# Run the unit test suite
+uv run --with pyyaml --with jsonschema --with pytest pytest reconciler/tests/ -v
 ```
 
-Validates `agent/taxonomy/` for shape, uniqueness, and ordering rules. PR 4 wires this into CI.
+CI runs all of the above on every PR that touches taxonomy, manifests, registry, or reconciler code.
+
+## Plan output
+
+`magpie plan` (today: `python -m reconciler plan`) outputs:
+
+```
+Plan: +15 -0 ~0 =0
+
+Warnings:                                  # only when present
+  ! force-include-violates-risk-tier [auto-merge-lint]: ...
+
+Skills:
+  + security-issue-import          1.0.0 (intent.domains)
+  + setup-isolated-setup-install   1.0.0 (skill.requires)
+  ...
+```
+
+Glyphs: `+` add, `-` remove, `~` change, `=`/blank keep (hidden unless `--show-keeps`).
+
+Exit codes:
+- 0: no changes (lock matches resolution)
+- 2: changes detected (CI gate signal)
+- 1: error (invalid intent, missing file, schema failure)
 
 ## References
 

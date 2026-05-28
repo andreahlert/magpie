@@ -75,3 +75,21 @@ jobs:
       # walking the tree.
       - name: Check registry is up to date
         run: uv run --with pyyaml python reconciler/build_registry.py --check --stable-timestamp
+
+      - name: Run reconciler unit tests
+        run: uv run --with pyyaml --with jsonschema --with pytest pytest reconciler/tests/ -v
+
+      - name: Smoke test plan CLI against fixture intent
+        # End-to-end against the real registry. Exit 2 is expected
+        # because the fixture intent has no on-disk lock — plan
+        # surfaces changes, which is the contractual exit code.
+        run: |
+          set +e
+          uv run --with pyyaml --with jsonschema python -m reconciler plan \
+            --intent reconciler/tests/fixtures/intent-minimal.yaml \
+            --lock /nonexistent.lock
+          rc=$?
+          if [ "$rc" -ne 2 ]; then
+            echo "plan CLI returned $rc, expected 2 (changes detected)" >&2
+            exit 1
+          fi

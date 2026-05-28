@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: Apache-2.0
+# Minimal valid intent for ad-hoc CLI testing against the real
+# framework registry. Touches every capability axis once.
+
+schema-version: 1
+
+framework:
+  install:
+    method: git-branch
+    ref: main
+
+capabilities:
+  domains:
+    - security
+    - framework-meta
+  audiences:
+    - security-pmc
+    - maintainer-inbound
+    - framework-operator
+  risk-tier-max: write-comment
+  integrations:
+    - github
+    - gmail
+    - vulnogram
+    - privacy-llm
+    - sandbox
+
+overrides:
+  exclude:
+    - security-tracker-stats-dashboard
+  params:
+    security-issue-import:
+      confirmation-reply-locale: pt-BR
