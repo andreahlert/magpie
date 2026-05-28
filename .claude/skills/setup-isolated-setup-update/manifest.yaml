@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+schema-version: 1
+id: setup-isolated-setup-update
+version: 1.0.0
+domains: [framework-meta]
+audiences: [framework-operator]
+risk-tier: read-only
+integrations: [sandbox]
+status: stable

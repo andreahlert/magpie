@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+schema-version: 1
+id: issue-triage
+version: 0.1.0
+domains: [issue-queue]
+audiences: [maintainer-inbound, contributor-facing]
+risk-tier: write-comment
+integrations: [github]
+status: experimental

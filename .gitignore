@@ -41,3 +41,8 @@ campaign/
 campaigns/
 pilot-*/
 reassess-*/
+
+# The `*-reassess/` pattern above is broad on purpose (catches
+# evidence packages anywhere in adopter trees). The issue-reassess
+# skill directory shares the suffix; allow it back in.
+!.claude/skills/issue-reassess/

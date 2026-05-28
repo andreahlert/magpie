@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+schema-version: 1
+id: setup-override-upstream
+version: 1.0.0
+domains: [framework-meta]
+audiences: [framework-operator, maintainer-inbound]
+risk-tier: draft-pr
+integrations: [github]
+status: stable
