@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magpie.apache.org/schemas/skills/security-issue-import/params.v1.json",
+  "title": "security-issue-import params",
+  "description": "Adopter-tunable parameters for the security-issue-import skill. The reconciler merges intent.overrides.params['security-issue-import'] onto params.defaults.yaml.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "security-list-mailbox": {
+      "type": "string",
+      "description": "Gmail label or query that identifies the security-list inbox. Example: 'label:security-list'."
+    },
+    "tracker-repo": {
+      "type": "string",
+      "description": "GitHub repo where tracking issues are created. 'owner/repo' form.",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "default-window-days": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 365,
+      "description": "Number of days back to scan when no explicit window is given. Default 14."
+    },
+    "wide-sweep-days": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 365,
+      "description": "Days back used for 'import all'. Default 90."
+    },
+    "needs-triage-status": {
+      "type": "string",
+      "description": "Status field value applied to newly imported trackers on the project board. Example: 'Needs triage'."
+    },
+    "confirmation-reply-locale": {
+      "type": "string",
+      "description": "BCP 47 language tag for the draft confirmation reply (en, pt-BR, etc.). Reporter-facing.",
+      "default": "en"
+    }
+  }
+}

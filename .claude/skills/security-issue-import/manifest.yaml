@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Machine-readable manifest for the security-issue-import skill.
+# Companion to SKILL.md. Read by the reconciler (PR 5+) to resolve
+# adopter intent into a concrete skill set.
+#
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+
+schema-version: 1
+
+id: security-issue-import
+version: 1.0.0
+
+domains:
+  - security
+audiences:
+  - security-pmc
+  - maintainer-inbound
+risk-tier: write-comment
+
+integrations:
+  - gmail
+  - github
+  - privacy-llm
+  - sandbox
+
+requires:
+  - setup-isolated-setup-install
+
+params:
+  schema: params.schema.json
+  defaults: params.defaults.yaml
+
+status: stable
