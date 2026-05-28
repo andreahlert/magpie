@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Safe defaults for security-issue-import. Adopter overrides land in
+# .apache-steward.intent.yaml under
+# overrides.params.security-issue-import. The reconciler merges
+# those on top of these values.
+
+default-window-days: 14
+wide-sweep-days: 90
+needs-triage-status: "Needs triage"
+confirmation-reply-locale: en

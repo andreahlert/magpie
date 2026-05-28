@@ -5,8 +5,12 @@
   "description": "Machine-readable manifest for a Magpie skill. Lives next to SKILL.md as manifest.yaml.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "version", "domains", "audiences", "risk-tier", "status"],
+  "required": ["schema-version", "id", "version", "domains", "audiences", "risk-tier", "status"],
   "properties": {
+    "schema-version": {
+      "type": "integer",
+      "const": 1
+    },
     "id": {
       "type": "string",
       "description": "Unique skill identifier. Matches the directory name under skills/.",
