@@ -12,6 +12,7 @@ framework:
 capabilities:
   domains:
     - security
+    - pr-queue
     - framework-meta
   audiences:
     - security-pmc
@@ -31,3 +32,5 @@ overrides:
   params:
     security-issue-import:
       confirmation-reply-locale: pt-BR
+    pr-management-triage:
+      project_display_name: "Fixture Project"

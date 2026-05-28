@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magpie.apache.org/schemas/skills/pr-management-triage/params.v1.json",
+  "title": "pr-management-triage params",
+  "description": "Adopter-tunable parameters consumed by the Jinja2 templates under this skill's templates/ directory. Required fields are mandatory; optional fields disable parts of the rendered output when absent.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project_display_name",
+    "quality_criteria_url",
+    "two_stage_triage_rationale_url",
+    "merge_conflicts_rebase_url",
+    "static_checks_url",
+    "testing_url",
+    "docs_building_url",
+    "project_communication_channel",
+    "project_communication_url",
+    "triage_marker_text",
+    "ai_attribution_footer"
+  ],
+  "properties": {
+    "project_display_name": { "type": "string" },
+    "quality_criteria_url": { "type": "string", "format": "uri" },
+    "two_stage_triage_rationale_url": { "type": "string", "format": "uri" },
+    "merge_conflicts_rebase_url": { "type": "string", "format": "uri" },
+    "static_checks_url": { "type": "string", "format": "uri" },
+    "testing_url": { "type": "string", "format": "uri" },
+    "docs_building_url": { "type": "string", "format": "uri" },
+    "helm_tests_url": { "type": "string", "format": "uri" },
+    "k8s_tests_url": { "type": "string", "format": "uri" },
+    "provider_testing_url": { "type": "string", "format": "uri" },
+    "project_communication_channel": { "type": "string" },
+    "project_communication_url": { "type": "string", "format": "uri" },
+    "triage_marker_text": {
+      "type": "string",
+      "description": "Verbatim marker text the skill embeds in every triage comment. Used by pr-management-stats to detect triaged PRs. Do not paraphrase."
+    },
+    "ai_attribution_footer": {
+      "type": "string",
+      "description": "Verbatim markdown block appended to contributor-facing comments. Multi-line."
+    }
+  }
+}

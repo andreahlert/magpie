@@ -1,0 +1,58 @@
+{# SPDX-License-Identifier: Apache-2.0 #}
+{# Jinja2 template rendered by `magpie apply` from
+   `.claude/skills/pr-management-triage/params.defaults.yaml`
+   merged with `intent.overrides.params['pr-management-triage']`. #}
+<!-- SPDX-License-Identifier: Apache-2.0
+     https://www.apache.org/licenses/LICENSE-2.0 -->
+
+# {{ project_display_name }} pr-management-triage comment templates
+
+Project-specific comment body library for the `pr-management-triage` skill, rendered from
+`intent.overrides.params['pr-management-triage']`. Edit the intent (or a sibling
+override file) to change wording, never this generated file.
+
+## Project URLs
+
+| Placeholder | Value |
+|---|---|
+| `quality_criteria_url` | {{ quality_criteria_url }} |
+| `two_stage_triage_rationale_url` | {{ two_stage_triage_rationale_url }} |
+| `merge_conflicts_rebase_url` | {{ merge_conflicts_rebase_url }} |
+| `static_checks_url` | {{ static_checks_url }} |
+| `testing_url` | {{ testing_url }} |
+| `docs_building_url` | {{ docs_building_url }} |
+{% if helm_tests_url -%}
+| `helm_tests_url` | {{ helm_tests_url }} |
+{% endif -%}
+{% if k8s_tests_url -%}
+| `k8s_tests_url` | {{ k8s_tests_url }} |
+{% endif -%}
+{% if provider_testing_url -%}
+| `provider_testing_url` | {{ provider_testing_url }} |
+{% endif -%}
+| `project_communication_channel` | {{ project_communication_channel }} |
+| `project_communication_url` | {{ project_communication_url }} |
+
+## Quality-criteria marker
+
+The skill embeds this exact string in every triage comment. `pr-management-stats`
+detects triaged PRs by searching for it verbatim.
+
+```
+{{ triage_marker_text }}
+```
+
+## AI-attribution footer
+
+```
+{{ ai_attribution_footer | indent(0) }}
+```
+
+## Notes
+
+This file is **generated**. Do not edit by hand. Re-render with:
+
+```bash
+python -m reconciler apply --experimental \
+  --render-templates-to <adopter>/.apache-steward-overrides/rendered
+```

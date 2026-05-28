@@ -12,8 +12,8 @@ This directory is built up across the PR sequence tracked in [issue #1](https://
 | PR 2 | First manifest + `validate_manifests.py` |
 | PR 4 | `build_registry.py` + `registry/skills-index.json` + CI workflow |
 | PR 5 | `resolve.py`, `plan.py`, `__main__.py` CLI in `plan` mode, tests |
-| PR 6 (this PR) | `apply.py` behind `--experimental` (lock write + optional symlink materialisation) |
-| PR 7 | Jinja2 template rendering hooked into `apply` |
+| PR 6 | `apply.py` behind `--experimental` (lock write + optional symlink materialisation) |
+| PR 7 (this PR) | Jinja2 template rendering via `--render-templates-to`. Pilot: pr-management-triage |
 
 Each PR adds without breaking what came before.
 
@@ -59,6 +59,9 @@ uv run --with pyyaml --with jsonschema python -m reconciler apply \
   --experimental
 # Add --dry-run to compute the result without writing.
 # Add --symlink-target <adopter>/.claude/skills to also wire up symlinks.
+# Add --render-templates-to <adopter>/.apache-steward-overrides/rendered
+# to also render every resolved skill's Jinja2 templates with effective
+# params (defaults + intent.overrides.params).
 
 # Run the unit test suite
 uv run --with pyyaml --with jsonschema --with pytest pytest reconciler/tests/ -v

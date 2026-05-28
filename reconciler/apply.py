@@ -50,6 +50,7 @@ class ApplyOutcome:
     symlinks_created: list[Path]
     symlinks_removed: list[Path]
     symlinks_unchanged: list[Path]
+    templates_rendered: list[Path]
     checksum: str
 
 
@@ -211,6 +212,77 @@ def materialise_symlinks(
     return created, removed, unchanged
 
 
+def render_templates(
+    resolution: Resolution,
+    *,
+    framework_root: Path,
+    output_dir: Path,
+    dry_run: bool,
+) -> list[Path]:
+    """Render every Jinja2 template declared by every resolved skill.
+
+    Reads the framework manifest at
+    ``framework_root/.claude/skills/<skill-id>/manifest.yaml`` to
+    discover ``templates:``. For each template, renders with the
+    effective params (the merged values already attached to the
+    resolved skill) and writes to
+    ``output_dir/<skill-id>/<basename without .j2>``.
+
+    Returns the list of written paths (or what *would* be written
+    on dry-run).
+    """
+    if yaml is None:  # pragma: no cover
+        raise RuntimeError("PyYAML required to render templates")
+    try:
+        from jinja2 import (
+            Environment,
+            FileSystemLoader,
+            StrictUndefined,
+            select_autoescape,
+        )
+    except ImportError as exc:  # pragma: no cover
+        raise RuntimeError(
+            "Jinja2 is required to render templates. Install with `pip install jinja2`."
+        ) from exc
+
+    written: list[Path] = []
+    skills_root = framework_root / ".claude" / "skills"
+
+    for sid in sorted(resolution.skills):
+        skill_dir = skills_root / sid
+        manifest_path = skill_dir / "manifest.yaml"
+        if not manifest_path.is_file():
+            continue
+        manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+        templates = manifest.get("templates") or []
+        if not templates:
+            continue
+
+        env = Environment(
+            loader=FileSystemLoader(str(skill_dir)),
+            autoescape=select_autoescape(disabled_extensions=("j2",), default_for_string=False),
+            undefined=StrictUndefined,
+            keep_trailing_newline=True,
+        )
+        params = resolution.skills[sid].params or {}
+        skill_output = output_dir / sid
+        if not dry_run:
+            skill_output.mkdir(parents=True, exist_ok=True)
+
+        for rel_template in templates:
+            template = env.get_template(rel_template)
+            rendered = template.render(**params)
+            basename = Path(rel_template).name
+            if basename.endswith(".j2"):
+                basename = basename[:-3]
+            target = skill_output / basename
+            if not dry_run:
+                target.write_text(rendered, encoding="utf-8")
+            written.append(target)
+
+    return written
+
+
 def apply(
     resolution: Resolution,
     *,
@@ -219,6 +291,7 @@ def apply(
     framework_version: str,
     framework_root: Path | None = None,
     symlink_dir: Path | None = None,
+    render_output_dir: Path | None = None,
     dry_run: bool = False,
     generated_at: str | None = None,
 ) -> ApplyOutcome:
@@ -241,11 +314,21 @@ def apply(
             dry_run=dry_run,
         )
 
+    rendered: list[Path] = []
+    if render_output_dir is not None and framework_root is not None:
+        rendered = render_templates(
+            resolution,
+            framework_root=framework_root,
+            output_dir=render_output_dir,
+            dry_run=dry_run,
+        )
+
     return ApplyOutcome(
         lock_path=lock_path,
         lock_written=lock_written,
         symlinks_created=created,
         symlinks_removed=removed,
         symlinks_unchanged=unchanged,
+        templates_rendered=rendered,
         checksum=payload["checksum"],
     )

@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Safe defaults for pr-management-triage Jinja2 templates.
+# Override per adopter via:
+#   .apache-steward.intent.yaml
+#   overrides.params.pr-management-triage.<field>: <value>
+
+project_display_name: "Your Project"
+quality_criteria_url: "https://example.org/contributing#pr-quality-criteria"
+two_stage_triage_rationale_url: "https://example.org/maintainership#two-stage-triage"
+merge_conflicts_rebase_url: "https://example.org/contributing#rebase"
+static_checks_url: "https://example.org/contributing#static-checks"
+testing_url: "https://example.org/contributing#testing"
+docs_building_url: "https://example.org/contributing#docs"
+helm_tests_url: null
+k8s_tests_url: null
+provider_testing_url: null
+project_communication_channel: "your-chat"
+project_communication_url: "https://example.org/chat"
+triage_marker_text: "Pull Request quality criteria"
+ai_attribution_footer: |
+  *This is an agent-drafted comment posted under maintainer
+  review. See [our two-stage triage rationale] for context.*

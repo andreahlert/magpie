@@ -2,9 +2,14 @@
 # Schema: ../../../reconciler/schemas/skill-manifest.schema.json
 schema-version: 1
 id: pr-management-triage
-version: 0.1.0
+version: 0.2.0
 domains: [pr-queue]
 audiences: [maintainer-inbound]
 risk-tier: write-comment
 integrations: [github]
+templates:
+  - templates/comment-templates.md.j2
+params:
+  schema: params.schema.json
+  defaults: params.defaults.yaml
 status: experimental
