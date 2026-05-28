@@ -21,6 +21,24 @@
 <!-- SPDX-License-Identifier: Apache-2.0
      https://www.apache.org/licenses/LICENSE-2.0 -->
 
+> **DEPRECATED — being replaced by `projects/_example-airflow/`**
+>
+> This skeleton predates the Model C adoption flow (intent +
+> lock) introduced via [RFC-MAG-0001](../../docs/rfcs/RFC-MAG-0001-adoption-models.md)
+> and [RFC-MAG-0002](../../docs/rfcs/RFC-MAG-0002-model-c-structural-impact.md).
+> New adopters should start from
+> [`projects/_example-airflow/`](../_example-airflow/) which
+> ships a real `intent.yaml` + generated `lock` and exercises
+> the reconciler engine.
+>
+> The fill-in-the-blanks files in this directory still work
+> with the legacy `setup-steward` takeover and remain
+> supported until PR 9 of the migration sequence flips the
+> default. Once that lands, this directory will be removed in
+> a follow-up release.
+>
+> Tracking: [issue #1](https://github.com/andreahlert/magpie/issues/1).
+
 # New project — TODO: replace with `<Project Name>`
 
 Skeleton directory for a new project under this framework. **Do not
