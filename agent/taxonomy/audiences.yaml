@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Canonical list of audiences a skill addresses or acts on
+# behalf of. Lifecycle and rules: see README.md.
+
+schema-version: 1
+
+audiences:
+  - id: maintainer-inbound
+    name: Maintainer (inbound queue)
+    description: >
+      Project maintainers acting on incoming reports, issues, or
+      PRs. Skill prepares suggestions or drafts that the
+      maintainer signs off on.
+
+  - id: contributor-facing
+    name: Contributor (in-thread)
+    description: >
+      External contributors mid-conversation. Skill talks to
+      them directly (mentoring tone, clarifying questions,
+      pointer to prior PR), under human supervision.
+
+  - id: dev-self
+    name: Developer (own working tree)
+    description: >
+      Committer or contributor running the skill against their
+      own branch before opening a PR. Mentorship is intrinsic.
+
+  - id: security-pmc
+    name: Security PMC member
+    description: >
+      Member of a project's private security list, handling
+      pre-disclosure content. Distinguished from
+      maintainer-inbound because the privacy boundary is
+      stricter.
+
+  - id: framework-operator
+    name: Framework operator
+    description: >
+      Person installing, verifying, or upgrading the framework
+      itself. Not a project maintainer in the workflow sense,
+      though usually the same human.

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magpie.apache.org/schemas/skill-manifest.v1.json",
+  "title": "Skill manifest",
+  "description": "Machine-readable manifest for a Magpie skill. Lives next to SKILL.md as manifest.yaml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "domains", "audiences", "risk-tier", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique skill identifier. Matches the directory name under skills/.",
+      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version of the skill. Bumped independently of the framework.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[A-Za-z0-9.-]+)?$"
+    },
+    "domains": {
+      "type": "array",
+      "description": "Domain ids from agent/taxonomy/domains.yaml.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "audiences": {
+      "type": "array",
+      "description": "Audience ids from agent/taxonomy/audiences.yaml.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "risk-tier": {
+      "type": "string",
+      "description": "Tier id from agent/taxonomy/risk-tiers.yaml. Single value, not a list."
+    },
+    "integrations": {
+      "type": "array",
+      "description": "Integration ids the skill requires. Subset of agent/taxonomy/integrations.yaml.",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "requires": {
+      "type": "array",
+      "description": "Skill ids this skill depends on. The reconciler pulls them in even if intent excludes them.",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "templates": {
+      "type": "array",
+      "description": "Template files the skill renders into the adopter workspace. Paths relative to the skill directory.",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "params": {
+      "type": "object",
+      "description": "Parameter contract for adopters.",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "type": "string",
+          "description": "Path to params JSON Schema, relative to the skill directory."
+        },
+        "defaults": {
+          "type": "string",
+          "description": "Path to safe default values, relative to the skill directory."
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "experimental", "stable", "deprecated", "off"],
+      "description": "Skill lifecycle status. 'off' means MISSION sequencing forbids enabling it (e.g. Auto-merge today)."
+    },
+    "replaces": {
+      "type": "array",
+      "description": "Skill ids this skill supersedes (rename or split). Used by reconciler/migrations.",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    }
+  }
+}

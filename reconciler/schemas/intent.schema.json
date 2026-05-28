@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://magpie.apache.org/schemas/intent.v1.json",
+  "title": "Adopter intent",
+  "description": "Source of truth committed by an adopter project. Describes desired Magpie capabilities and overrides. The reconciler reads this file and emits a lock.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema-version", "framework", "capabilities"],
+  "properties": {
+    "schema-version": {
+      "type": "integer",
+      "const": 1
+    },
+    "framework": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["install"],
+      "properties": {
+        "install": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "ref"],
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": ["svn-zip", "git-tag", "git-branch"]
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Source URL. Optional for git-branch when defaulting to the canonical apache repo."
+            },
+            "ref": {
+              "type": "string",
+              "description": "Branch name, tag, or release version depending on method."
+            }
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domains", "audiences", "risk-tier-max", "integrations"],
+      "properties": {
+        "domains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Domain ids the adopter cares about."
+        },
+        "audiences": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Audience ids the adopter wants skills to address."
+        },
+        "risk-tier-max": {
+          "type": "string",
+          "description": "Highest risk tier id the adopter accepts. Skills above this tier are excluded."
+        },
+        "integrations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Integration ids the adopter has wired up."
+        }
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "exclude": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Skill ids to force off even when capabilities would include them."
+        },
+        "force-include": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Skill ids to force on even when capabilities would exclude them. Warns if violates risk-tier-max."
+        },
+        "pin": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[A-Za-z0-9.-]+)?$"
+          },
+          "description": "Map of skill id to pinned semver. Reconciler uses this version instead of latest available."
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": { "type": "object" },
+          "description": "Map of skill id to param overrides for that skill. Shape per skill defined in its params.schema.json."
+        }
+      }
+    }
+  }
+}

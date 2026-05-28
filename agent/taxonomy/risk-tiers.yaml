@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Ordered risk/automation tiers. A skill declares one tier.
+# Adopter declares risk-tier-max. The reconciler excludes any
+# skill whose tier ranks higher than the adopter's max.
+#
+# Order is load-bearing: keep contiguous, ascending integers.
+# Lifecycle and rules: see README.md.
+
+schema-version: 1
+
+tiers:
+  - id: read-only
+    order: 0
+    name: Read-only
+    description: >
+      Skill reads project state and produces a report or
+      analysis. No external side effect. Examples: PR queue
+      stats, security tracker dashboards.
+
+  - id: suggest-only
+    order: 1
+    name: Suggest only
+    description: >
+      Skill produces a paste-ready artefact (label list, draft
+      reply, CVE submission JSON) for a human to review and
+      submit. No write to GitHub, Jira, or mail.
+
+  - id: write-comment
+    order: 2
+    name: Write comment
+    description: >
+      Skill posts comments or labels on behalf of the
+      maintainer. Reversible by the maintainer. Examples:
+      triage label application, mentoring reply.
+
+  - id: draft-pr
+    order: 3
+    name: Draft PR
+    description: >
+      Skill opens a PR with an agent-authored change. Human
+      committer reviews and merges. The PR exists and is
+      visible, but nothing lands on the default branch without
+      a human merge.
+
+  - id: write-merge
+    order: 4
+    name: Write and merge
+    description: >
+      Skill auto-merges a narrow class of change without human
+      review on the merge step itself. Restricted to objectively
+      boring categories per MISSION.md (lint, allow-listed
+      dependency bumps, license-header insertion, formatting,
+      broken-link repair). Off by default at the framework
+      level.
