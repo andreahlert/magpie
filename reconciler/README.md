@@ -13,7 +13,8 @@ This directory is built up across the PR sequence tracked in [issue #1](https://
 | PR 4 | `build_registry.py` + `registry/skills-index.json` + CI workflow |
 | PR 5 | `resolve.py`, `plan.py`, `__main__.py` CLI in `plan` mode, tests |
 | PR 6 | `apply.py` behind `--experimental` (lock write + optional symlink materialisation) |
-| PR 7 (this PR) | Jinja2 template rendering via `--render-templates-to`. Pilot: pr-management-triage |
+| PR 7 | Jinja2 template rendering via `--render-templates-to`. Pilot: pr-management-triage |
+| PR 9 (this PR) | Flip default. `--experimental` becomes no-op. New `docs/adoption/`. README + setup-steward updated. |
 
 Each PR adds without breaking what came before.
 
