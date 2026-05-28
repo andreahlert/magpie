@@ -1,4 +1,4 @@
-checksum: sha256:871a00a9ba370a20698206fbf491ba9ff6eaa4fef8a8af242f7784d0460eb60f
+checksum: sha256:c561eee5f3a93d31e706b00b78da062d1e7a28439380c193eb5cb7adcdd91361
 exclusions:
   issue-reassess:
     reason: intent.overrides.exclude
@@ -192,4 +192,4 @@ skills:
     integrations-resolved:
     - github
     source: intent.domains
-    version: 1.0.0
+    version: 2.0.0

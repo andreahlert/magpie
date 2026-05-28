@@ -2,9 +2,14 @@
 name: setup-steward
 description: |
   Adopt and maintain the apache-steward framework in a project
-  repo via the snapshot-based adoption mechanism. The only
-  framework skill committed in an adopter's repo — every other
-  skill is a symlink the adopt sub-action wires up.
+  repo via the snapshot-based adoption mechanism. As of PR 9 in
+  issue #1 the recommended adopt flow is intent + lock (Model C):
+  the adopter authors `.apache-steward.intent.yaml`, runs
+  `python -m reconciler apply`, and commits the generated
+  `.apache-steward.lock` alongside it. The legacy family-based
+  takeover described below remains available for adopters already
+  on it. The reconciler engine lives in `reconciler/`; this skill
+  is the operator-facing wrapper.
   Sub-actions:
     `/setup-steward`         — first-time adoption (default;
                                 main-checkout only)

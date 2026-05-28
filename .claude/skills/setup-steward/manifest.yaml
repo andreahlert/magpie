@@ -2,7 +2,7 @@
 # Schema: ../../../reconciler/schemas/skill-manifest.schema.json
 schema-version: 1
 id: setup-steward
-version: 1.0.0
+version: 2.0.0
 domains: [framework-meta]
 audiences: [framework-operator]
 risk-tier: write-comment

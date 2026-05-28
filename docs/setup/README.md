@@ -65,7 +65,27 @@ framework safe to use.
   for each. The page to grep when a normal-looking operation
   fails in the sandbox in an unexpected way.
 
-## Typical lifecycle
+## Model C lifecycle (default since PR 9)
+
+As of PR 9 in issue [#1](https://github.com/andreahlert/magpie/issues/1) the default adoption flow is intent + lock. See [`docs/adoption/`](../adoption/) for the full guide.
+
+```text
+new dev machine
+  ↓ setup-isolated-setup-install
+isolated setup installed
+  ↓ author .apache-steward.intent.yaml
+    (start from projects/_example-airflow/)
+  ↓ python -m reconciler plan
+  ↓ python -m reconciler apply
+        --symlink-target .claude/skills
+        --render-templates-to .apache-steward-overrides/rendered
+adopted
+  ↓ setup-isolated-setup-update          (periodic)
+  ↓ setup-steward upgrade                (when framework releases)
+  ↓ python -m reconciler plan -> apply   (after every snapshot upgrade)
+```
+
+## Legacy lifecycle (family-based takeover)
 
 ```text
 new dev machine

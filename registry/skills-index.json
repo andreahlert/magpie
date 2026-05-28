@@ -1,5 +1,5 @@
 {
-  "checksum": "sha256:00203202d119239562e563ef4417addd16f26863592a3c7d9dbf6ceafac40f3d",
+  "checksum": "sha256:adb84cbfcacc61732bcd2c64dafb728d4c94395f7e5fb56764204775dfee93ea",
   "framework-version": "0.0.0",
   "generated-at": "1970-01-01T00:00:00Z",
   "schema-version": 1,
@@ -468,7 +468,7 @@
       ],
       "risk-tier": "write-comment",
       "status": "stable",
-      "version": "1.0.0"
+      "version": "2.0.0"
     },
     "write-skill": {
       "audiences": [

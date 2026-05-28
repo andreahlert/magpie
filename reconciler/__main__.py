@@ -162,14 +162,10 @@ def _framework_version_from_pyproject(framework_root: Path) -> str:
 
 
 def _cmd_apply(args: argparse.Namespace) -> int:
-    if not args.experimental:
-        sys.stderr.write(
-            "reconciler: apply is opt-in during the PR 6 rollout. "
-            "Pass --experimental to proceed. The legacy setup-steward "
-            "family-based takeover remains the supported path until PR 9.\n"
-        )
-        return 1
-
+    # As of PR 9, apply is the default adoption path; --experimental
+    # is retained as a no-op flag for backward compatibility with
+    # documentation and tooling that landed during the rollout.
+    _ = args.experimental
     intent_path = Path(args.intent).resolve()
     if not intent_path.is_file():
         sys.stderr.write(f"reconciler: intent file not found: {intent_path}\n")
@@ -322,8 +318,8 @@ def main(argv: list[str] | None = None) -> int:
         "--experimental",
         action="store_true",
         help=(
-            "Required during the PR 6 rollout. Acknowledges that apply is "
-            "opt-in and the legacy setup-steward takeover remains supported."
+            "No-op since PR 9; retained for backward compatibility with "
+            "documentation and tooling from the rollout window."
         ),
     )
     apply.add_argument(
