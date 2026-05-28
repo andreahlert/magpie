@@ -1,0 +1,485 @@
+{
+  "checksum": "sha256:7a47a78b5367076407e8fe97a268f1af62ee9701cf1427d9205db3d701927443",
+  "framework-version": "0.0.0",
+  "generated-at": "1970-01-01T00:00:00Z",
+  "schema-version": 1,
+  "skill-count": 29,
+  "skills": {
+    "contributor-nomination": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "contributor-lifecycle"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "read-only",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "issue-fix-workflow": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "issue-queue",
+        "dev-cycle"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "draft-pr",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "issue-reassess": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "issue-queue"
+      ],
+      "integrations": [
+        "github",
+        "sandbox"
+      ],
+      "requires": [
+        "issue-reproducer"
+      ],
+      "risk-tier": "read-only",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "issue-reassess-stats": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "issue-queue"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "read-only",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "issue-reproducer": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "issue-queue",
+        "dev-cycle"
+      ],
+      "integrations": [
+        "github",
+        "sandbox"
+      ],
+      "risk-tier": "read-only",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "issue-triage": {
+      "audiences": [
+        "maintainer-inbound",
+        "contributor-facing"
+      ],
+      "domains": [
+        "issue-queue"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "write-comment",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "list-steward-skills": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "pr-management-code-review": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "pr-queue"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "write-comment",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "pr-management-mentor": {
+      "audiences": [
+        "contributor-facing"
+      ],
+      "domains": [
+        "pr-queue",
+        "contributor-lifecycle"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "write-comment",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "pr-management-stats": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "pr-queue"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "read-only",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "pr-management-triage": {
+      "audiences": [
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "pr-queue"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "write-comment",
+      "status": "experimental",
+      "version": "0.1.0"
+    },
+    "security-cve-allocate": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "vulnogram",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "security-issue-sync",
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-deduplicate": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-fix": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security",
+        "dev-cycle"
+      ],
+      "integrations": [
+        "github",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "security-issue-sync",
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "draft-pr",
+      "status": "experimental",
+      "version": "0.5.0"
+    },
+    "security-issue-import": {
+      "audiences": [
+        "security-pmc",
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "gmail",
+        "github",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "params": {
+        "defaults": "params.defaults.yaml",
+        "schema": "params.schema.json"
+      },
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-import-from-md": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-import-from-pr": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-invalidate": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "gmail",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-sync": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "gmail",
+        "ponymail",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-issue-triage": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "privacy-llm",
+        "sandbox"
+      ],
+      "requires": [
+        "setup-isolated-setup-install"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "security-tracker-stats-dashboard": {
+      "audiences": [
+        "security-pmc"
+      ],
+      "domains": [
+        "security"
+      ],
+      "integrations": [
+        "github",
+        "sandbox"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-isolated-setup-doctor": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "sandbox"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-isolated-setup-install": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "sandbox"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-isolated-setup-update": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "sandbox"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-isolated-setup-verify": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "sandbox"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-override-upstream": {
+      "audiences": [
+        "framework-operator",
+        "maintainer-inbound"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "draft-pr",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-shared-config-sync": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "setup-steward": {
+      "audiences": [
+        "framework-operator"
+      ],
+      "domains": [
+        "framework-meta"
+      ],
+      "integrations": [
+        "github"
+      ],
+      "risk-tier": "write-comment",
+      "status": "stable",
+      "version": "1.0.0"
+    },
+    "write-skill": {
+      "audiences": [
+        "dev-self"
+      ],
+      "domains": [
+        "framework-meta",
+        "dev-cycle"
+      ],
+      "risk-tier": "read-only",
+      "status": "stable",
+      "version": "1.0.0"
+    }
+  },
+  "taxonomy": {
+    "audiences.yaml": 5,
+    "domains.yaml": 7,
+    "integrations.yaml": 9,
+    "risk-tiers.yaml": 5
+  }
+}

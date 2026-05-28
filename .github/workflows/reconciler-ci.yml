@@ -1,0 +1,77 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+---
+name: reconciler-ci
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    paths:
+      - "agent/taxonomy/**"
+      - ".claude/skills/**/manifest.yaml"
+      - ".claude/skills/**/params.schema.json"
+      - ".claude/skills/**/params.defaults.yaml"
+      - "reconciler/**"
+      - "registry/**"
+      - ".github/workflows/reconciler-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "agent/taxonomy/**"
+      - ".claude/skills/**/manifest.yaml"
+      - ".claude/skills/**/params.schema.json"
+      - ".claude/skills/**/params.defaults.yaml"
+      - "reconciler/**"
+      - "registry/**"
+      - ".github/workflows/reconciler-ci.yml"
+
+permissions: {}
+
+jobs:
+  validate-and-build:
+    name: "validate taxonomy + manifests, check registry"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      FORCE_COLOR: "1"
+      PY_COLORS: "1"
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
+
+      # uv brings its own Python. The reconciler is stdlib + PyYAML +
+      # jsonschema; no project-scoped lockfile yet, so we install the
+      # two deps inline via uv's --with flag.
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Validate taxonomy
+        run: uv run --with pyyaml python reconciler/validate_taxonomy.py
+
+      - name: Validate skill manifests
+        run: uv run --with pyyaml --with jsonschema python reconciler/validate_manifests.py
+
+      # The on-disk registry must match what would be generated from
+      # current manifests. A manifest edit without a registry rebuild
+      # is a merge blocker — the registry is committed precisely so
+      # that adopter tooling can read a single canonical file without
+      # walking the tree.
+      - name: Check registry is up to date
+        run: uv run --with pyyaml python reconciler/build_registry.py --check --stable-timestamp
