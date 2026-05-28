@@ -5,7 +5,8 @@
 - [Setup skill family](#setup-skill-family)
   - [Skills](#skills)
   - [Deep documentation](#deep-documentation)
-  - [Typical lifecycle](#typical-lifecycle)
+  - [Model C lifecycle (default since PR 9)](#model-c-lifecycle-default-since-pr-9)
+  - [Legacy lifecycle (family-based takeover)](#legacy-lifecycle-family-based-takeover)
   - [Cross-references](#cross-references)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

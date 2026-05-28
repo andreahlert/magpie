@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Adopting Magpie (Model C)](#adopting-magpie-model-c)
+  - [Three-step adoption](#three-step-adoption)
+  - [Topics](#topics)
+  - [Reference](#reference)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Adopting Magpie (Model C)
@@ -8,15 +19,15 @@ Adoption under the **intent + lock** model. As of PR 9 this is the default flow.
 
 1. **Bootstrap the framework snapshot** into your repo. Same shell recipe as before. See [`../setup/install-recipes.md`](../setup/install-recipes.md).
 2. **Author your intent.** Copy [`projects/_example-airflow/.apache-steward.intent.yaml`](../../projects/_example-airflow/.apache-steward.intent.yaml) to your repo root as `.apache-steward.intent.yaml`. Edit four blocks: `capabilities`, `overrides.exclude`, `overrides.pin`, `overrides.params`.
-3. **Plan and apply.**
+3. **Plan and apply.** Commands prepend `PYTHONPATH=.apache-steward` so Python finds the reconciler inside the bootstrapped snapshot at `<adopter>/.apache-steward/reconciler/` (gitignored, not on default path).
 
 ```bash
 # See what would happen
-uv run --with pyyaml --with jsonschema --with jinja2 \
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler plan
 
 # Materialise: write lock + symlinks + render templates
-uv run --with pyyaml --with jsonschema --with jinja2 \
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler apply \
     --symlink-target .claude/skills \
     --render-templates-to .apache-steward-overrides/rendered

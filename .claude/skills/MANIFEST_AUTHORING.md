@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Authoring a skill manifest](#authoring-a-skill-manifest)
+  - [Reference pilot](#reference-pilot)
+  - [Required fields](#required-fields)
+  - [Optional fields](#optional-fields)
+  - [Choosing the `risk-tier`](#choosing-the-risk-tier)
+  - [Choosing `audiences`](#choosing-audiences)
+  - [Choosing `integrations`](#choosing-integrations)
+  - [Validating](#validating)
+  - [When a skill is renamed or split](#when-a-skill-is-renamed-or-split)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Authoring a skill manifest

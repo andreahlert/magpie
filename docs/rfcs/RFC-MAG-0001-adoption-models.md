@@ -1,3 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [RFC-MAG-0001: Adoption models (intent vs skill vs hybrid)](#rfc-mag-0001-adoption-models-intent-vs-skill-vs-hybrid)
+- [Dois modelos pra configurar Magpie num projeto adopter](#dois-modelos-pra-configurar-magpie-num-projeto-adopter)
+  - [O problema](#o-problema)
+  - [Modelo A: Intent-based (estilo Terraform)](#modelo-a-intent-based-estilo-terraform)
+    - [A ideia](#a-ideia)
+    - [Como o adopter declara](#como-o-adopter-declara)
+    - [O que o Magpie faz](#o-que-o-magpie-faz)
+    - [Analogia leiga](#analogia-leiga)
+    - [Vantagens](#vantagens)
+    - [Desvantagens](#desvantagens)
+  - [Modelo B: Skill-based (estilo Ansible)](#modelo-b-skill-based-estilo-ansible)
+    - [A ideia](#a-ideia-1)
+    - [Como o adopter declara](#como-o-adopter-declara-1)
+    - [O que o Magpie faz](#o-que-o-magpie-faz-1)
+    - [Analogia leiga](#analogia-leiga-1)
+    - [Vantagens](#vantagens-1)
+    - [Desvantagens](#desvantagens-1)
+  - [Modelo C: Intent com lock de skills (híbrido)](#modelo-c-intent-com-lock-de-skills-h%C3%ADbrido)
+    - [A ideia](#a-ideia-2)
+    - [Como o adopter declara](#como-o-adopter-declara-2)
+    - [Como o ciclo funciona](#como-o-ciclo-funciona)
+    - [Analogia leiga](#analogia-leiga-2)
+    - [Vantagens](#vantagens-2)
+    - [Desvantagens](#desvantagens-2)
+    - [Quando faz sentido](#quando-faz-sentido)
+  - [Comparação lado a lado](#compara%C3%A7%C3%A3o-lado-a-lado)
+  - [Onde Magpie está hoje](#onde-magpie-est%C3%A1-hoje)
+  - [A pergunta de design](#a-pergunta-de-design)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # RFC-MAG-0001: Adoption models (intent vs skill vs hybrid)

@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Intent cookbook](#intent-cookbook)
+  - [A. Security-only adopter](#a-security-only-adopter)
+  - [B. Full PMC adopter (security + PR + issue + mentoring)](#b-full-pmc-adopter-security--pr--issue--mentoring)
+  - [C. Dev-cycle focus](#c-dev-cycle-focus)
+  - [D. Non-ASF adopter](#d-non-asf-adopter)
+  - [How to read these](#how-to-read-these)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Intent cookbook
@@ -115,7 +128,7 @@ Every cookbook entry produces a different resolved skill set. Use `magpie plan` 
 
 If a skill you expected to land is missing, check the exclusion reasons in the plan output:
 
-```
+```text
 Plan: +9 -0 ~0 =0
 ...
 ```

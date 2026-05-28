@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Reconciler](#reconciler)
+  - [Layout](#layout)
+  - [Why a separate directory](#why-a-separate-directory)
+  - [Running today](#running-today)
+  - [Plan output](#plan-output)
+  - [References](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Reconciler
@@ -20,7 +33,7 @@ Each PR adds without breaking what came before.
 
 ## Layout
 
-```
+```text
 reconciler/
 ├── schemas/                    # JSON Schema for intent, lock, manifest
 ├── validate_taxonomy.py        # standalone taxonomy linter (PR 1)
@@ -74,7 +87,7 @@ CI runs all of the above on every PR that touches taxonomy, manifests, registry,
 
 `magpie plan` (today: `python -m reconciler plan`) outputs:
 
-```
+```text
 Plan: +15 -0 ~0 =0
 
 Warnings:                                  # only when present

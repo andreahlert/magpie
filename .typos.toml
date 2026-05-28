@@ -79,4 +79,8 @@ extend-exclude = [
   "tools/*/uv.lock",
   "tools/agent-isolation/pinned-versions.toml",
   "*.svg",
+  # RFC-MAG series was authored in Portuguese as design notes
+  # for the Model C migration (issue #1). The English summary
+  # lives in docs/adoption/.
+  "docs/rfcs/RFC-MAG-*.md",
 ]

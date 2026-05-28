@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Capability taxonomy](#capability-taxonomy)
+  - [Files](#files)
+  - [Lifecycle](#lifecycle)
+  - [Why centralised](#why-centralised)
+  - [Reference](#reference)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Capability taxonomy
@@ -26,4 +38,4 @@ The reconciler resolves an adopter's `intent.yaml` into a concrete skill set by 
 
 ## Reference
 
-Background and the model this taxonomy serves: [`docs/rfcs/model-c-structural-impact.md`](../../docs/rfcs/model-c-structural-impact.md).
+Background and the model this taxonomy serves: [`docs/rfcs/RFC-MAG-0002-model-c-structural-impact.md`](../../docs/rfcs/RFC-MAG-0002-model-c-structural-impact.md).

@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Example adopter: Apache Airflow shape](#example-adopter-apache-airflow-shape)
+  - [Files](#files)
+  - [Reproducing the lock](#reproducing-the-lock)
+  - [What this intent demonstrates](#what-this-intent-demonstrates)
+  - [What this is NOT](#what-this-is-not)
+  - [Cross-references](#cross-references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Example adopter: Apache Airflow shape
