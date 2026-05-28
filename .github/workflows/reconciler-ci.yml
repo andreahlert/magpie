@@ -93,3 +93,35 @@ jobs:
             echo "plan CLI returned $rc, expected 2 (changes detected)" >&2
             exit 1
           fi
+
+      - name: Smoke test apply CLI in dry-run and write modes
+        # Apply is opt-in via --experimental during the PR 6 rollout.
+        # Dry-run writes nothing; the subsequent real run produces a
+        # lock that must validate against lock.schema.json.
+        env:
+          LOCK_PATH: ${{ runner.temp }}/apply-smoke/.apache-steward.lock
+        run: |
+          set -e
+          mkdir -p "$(dirname "$LOCK_PATH")"
+          uv run --with pyyaml --with jsonschema python -m reconciler apply \
+            --intent reconciler/tests/fixtures/intent-minimal.yaml \
+            --lock "$LOCK_PATH" \
+            --experimental --dry-run
+          test ! -f "$LOCK_PATH"
+          uv run --with pyyaml --with jsonschema python -m reconciler apply \
+            --intent reconciler/tests/fixtures/intent-minimal.yaml \
+            --lock "$LOCK_PATH" \
+            --experimental
+          test -f "$LOCK_PATH"
+          uv run --with pyyaml --with jsonschema python -c "
+          import json, yaml, os, sys
+          from jsonschema import Draft202012Validator
+          schema = json.load(open('reconciler/schemas/lock.schema.json'))
+          lock = yaml.safe_load(open(os.environ['LOCK_PATH']))
+          errors = list(Draft202012Validator(schema).iter_errors(lock))
+          if errors:
+              for e in errors:
+                  print(f'{list(e.path)}: {e.message}')
+              sys.exit(1)
+          print('lock validates against lock.schema.json')
+          "

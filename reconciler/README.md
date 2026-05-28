@@ -11,8 +11,8 @@ This directory is built up across the PR sequence tracked in [issue #1](https://
 | PR 1 | `schemas/` (intent, lock, skill manifest) + `validate_taxonomy.py` |
 | PR 2 | First manifest + `validate_manifests.py` |
 | PR 4 | `build_registry.py` + `registry/skills-index.json` + CI workflow |
-| PR 5 (this PR) | `resolve.py`, `plan.py`, `__main__.py` CLI in `plan` mode, tests |
-| PR 6 | `apply.py` behind `--experimental` |
+| PR 5 | `resolve.py`, `plan.py`, `__main__.py` CLI in `plan` mode, tests |
+| PR 6 (this PR) | `apply.py` behind `--experimental` (lock write + optional symlink materialisation) |
 | PR 7 | Jinja2 template rendering hooked into `apply` |
 
 Each PR adds without breaking what came before.
@@ -49,6 +49,16 @@ uv run --with pyyaml python reconciler/build_registry.py --stable-timestamp
 uv run --with pyyaml --with jsonschema python -m reconciler plan \
   --intent path/to/.apache-steward.intent.yaml \
   --lock path/to/.apache-steward.lock
+
+# Apply: write the resolved lock (opt-in via --experimental
+# during PR 6 rollout). Optional --symlink-target materialises
+# one symlink per resolved skill into the framework checkout.
+uv run --with pyyaml --with jsonschema python -m reconciler apply \
+  --intent path/to/.apache-steward.intent.yaml \
+  --lock   path/to/.apache-steward.lock \
+  --experimental
+# Add --dry-run to compute the result without writing.
+# Add --symlink-target <adopter>/.claude/skills to also wire up symlinks.
 
 # Run the unit test suite
 uv run --with pyyaml --with jsonschema --with pytest pytest reconciler/tests/ -v
