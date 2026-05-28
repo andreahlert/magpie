@@ -205,13 +205,19 @@ def _cmd_apply(args: argparse.Namespace) -> int:
     except ValueError:
         intent_relpath = str(intent_path)
 
+    need_framework = bool(args.symlink_target or args.render_templates_to)
     outcome = run_apply(
         resolution,
         lock_path=lock_path,
         intent_relpath=intent_relpath,
         framework_version=framework_version,
-        framework_root=framework_root if args.symlink_target else None,
+        framework_root=framework_root if need_framework else None,
         symlink_dir=Path(args.symlink_target).resolve() if args.symlink_target else None,
+        render_output_dir=(
+            Path(args.render_templates_to).resolve()
+            if args.render_templates_to
+            else None
+        ),
         dry_run=args.dry_run,
     )
 
@@ -223,6 +229,12 @@ def _cmd_apply(args: argparse.Namespace) -> int:
         sys.stdout.write(
             f"apply: symlinks {verb} create={len(outcome.symlinks_created)} "
             f"remove={len(outcome.symlinks_removed)} keep={len(outcome.symlinks_unchanged)}\n"
+        )
+    if args.render_templates_to:
+        verb = "would render" if args.dry_run else "rendered"
+        sys.stdout.write(
+            f"apply: templates {verb} {len(outcome.templates_rendered)} file(s) under "
+            f"{args.render_templates_to}\n"
         )
     if resolution.warnings:
         sys.stdout.write("apply: warnings:\n")
@@ -289,6 +301,15 @@ def main(argv: list[str] | None = None) -> int:
             "If set, create one symlink per resolved skill in this directory "
             "pointing into the framework checkout. Existing framework-pointing "
             "symlinks that no longer correspond to a resolved skill are pruned."
+        ),
+    )
+    apply.add_argument(
+        "--render-templates-to",
+        type=str,
+        default=None,
+        help=(
+            "If set, render every resolved skill's Jinja2 templates with the "
+            "effective params into this directory, one subdir per skill id."
         ),
     )
     apply.add_argument(

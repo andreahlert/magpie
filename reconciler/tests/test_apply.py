@@ -8,6 +8,7 @@ from reconciler.apply import (
     apply,
     build_lock_payload,
     materialise_symlinks,
+    render_templates,
 )
 from reconciler.resolve import resolve
 
@@ -199,3 +200,121 @@ def test_materialise_symlinks_dry_run_makes_no_changes(
     assert created  # plan reports them
     for sid in res.skills:
         assert not (target_dir / sid).exists()
+
+
+def _build_fake_skill_with_template(framework_root, skill_id, template_body, params_defaults=None):
+    skill_dir = framework_root / ".claude" / "skills" / skill_id
+    (skill_dir / "templates").mkdir(parents=True)
+    (skill_dir / "templates" / "hello.md.j2").write_text(template_body)
+    manifest = {
+        "schema-version": 1,
+        "id": skill_id,
+        "version": "0.1.0",
+        "domains": ["pr-queue"],
+        "audiences": ["maintainer-inbound"],
+        "risk-tier": "read-only",
+        "integrations": ["github"],
+        "templates": ["templates/hello.md.j2"],
+        "status": "experimental",
+    }
+    import yaml as _yaml
+    (skill_dir / "manifest.yaml").write_text(_yaml.safe_dump(manifest))
+    if params_defaults is not None:
+        (skill_dir / "params.defaults.yaml").write_text(_yaml.safe_dump(params_defaults))
+
+
+def test_render_templates_writes_file_with_substituted_params(
+    tmp_path, taxonomy, registry, base_intent
+):
+    framework_root = tmp_path / "framework"
+    _build_fake_skill_with_template(
+        framework_root,
+        "pr-management-triage",
+        "Hello {{ name }} on {{ project }}.\n",
+    )
+
+    # Construct a resolution by hand for the fake skill.
+    from reconciler.resolve import ResolvedSkill, Resolution
+    res = Resolution()
+    res.skills["pr-management-triage"] = ResolvedSkill(
+        skill_id="pr-management-triage",
+        version="0.1.0",
+        source="intent.domains",
+        integrations_resolved=["github"],
+        params={"name": "World", "project": "Magpie"},
+    )
+
+    output_dir = tmp_path / "adopter" / "rendered"
+    written = render_templates(
+        res,
+        framework_root=framework_root,
+        output_dir=output_dir,
+        dry_run=False,
+    )
+
+    assert len(written) == 1
+    target = output_dir / "pr-management-triage" / "hello.md"
+    assert target.is_file()
+    assert target.read_text() == "Hello World on Magpie.\n"
+
+
+def test_render_templates_dry_run_writes_nothing(
+    tmp_path, taxonomy, registry, base_intent
+):
+    framework_root = tmp_path / "framework"
+    _build_fake_skill_with_template(
+        framework_root,
+        "pr-management-triage",
+        "Hello {{ name }}.\n",
+    )
+    from reconciler.resolve import ResolvedSkill, Resolution
+    res = Resolution()
+    res.skills["pr-management-triage"] = ResolvedSkill(
+        skill_id="pr-management-triage",
+        version="0.1.0",
+        source="intent.domains",
+        integrations_resolved=["github"],
+        params={"name": "World"},
+    )
+
+    output_dir = tmp_path / "adopter" / "rendered"
+    written = render_templates(
+        res,
+        framework_root=framework_root,
+        output_dir=output_dir,
+        dry_run=True,
+    )
+    assert len(written) == 1
+    assert not (output_dir / "pr-management-triage" / "hello.md").exists()
+
+
+def test_render_templates_strict_undefined_raises_on_missing_param(
+    tmp_path, taxonomy, registry, base_intent
+):
+    framework_root = tmp_path / "framework"
+    _build_fake_skill_with_template(
+        framework_root,
+        "pr-management-triage",
+        "Hello {{ name }} {{ missing }}.\n",
+    )
+    from reconciler.resolve import ResolvedSkill, Resolution
+    from jinja2 import UndefinedError
+    import pytest as _pytest
+
+    res = Resolution()
+    res.skills["pr-management-triage"] = ResolvedSkill(
+        skill_id="pr-management-triage",
+        version="0.1.0",
+        source="intent.domains",
+        integrations_resolved=["github"],
+        params={"name": "World"},
+    )
+
+    output_dir = tmp_path / "adopter" / "rendered"
+    with _pytest.raises(UndefinedError):
+        render_templates(
+            res,
+            framework_root=framework_root,
+            output_dir=output_dir,
+            dry_run=False,
+        )

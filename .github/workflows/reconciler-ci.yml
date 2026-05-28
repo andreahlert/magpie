@@ -77,7 +77,7 @@ jobs:
         run: uv run --with pyyaml python reconciler/build_registry.py --check --stable-timestamp
 
       - name: Run reconciler unit tests
-        run: uv run --with pyyaml --with jsonschema --with pytest pytest reconciler/tests/ -v
+        run: uv run --with pyyaml --with jsonschema --with jinja2 --with pytest pytest reconciler/tests/ -v
 
       - name: Smoke test plan CLI against fixture intent
         # End-to-end against the real registry. Exit 2 is expected
@@ -97,22 +97,30 @@ jobs:
       - name: Smoke test apply CLI in dry-run and write modes
         # Apply is opt-in via --experimental during the PR 6 rollout.
         # Dry-run writes nothing; the subsequent real run produces a
-        # lock that must validate against lock.schema.json.
+        # lock that must validate against lock.schema.json plus
+        # renders the Jinja2 templates declared by resolved skills.
         env:
           LOCK_PATH: ${{ runner.temp }}/apply-smoke/.apache-steward.lock
+          RENDER_DIR: ${{ runner.temp }}/apply-smoke/rendered
         run: |
           set -e
           mkdir -p "$(dirname "$LOCK_PATH")"
-          uv run --with pyyaml --with jsonschema python -m reconciler apply \
-            --intent reconciler/tests/fixtures/intent-minimal.yaml \
-            --lock "$LOCK_PATH" \
-            --experimental --dry-run
+          uv run --with pyyaml --with jsonschema --with jinja2 \
+            python -m reconciler apply \
+              --intent reconciler/tests/fixtures/intent-minimal.yaml \
+              --lock "$LOCK_PATH" \
+              --render-templates-to "$RENDER_DIR" \
+              --experimental --dry-run
           test ! -f "$LOCK_PATH"
-          uv run --with pyyaml --with jsonschema python -m reconciler apply \
-            --intent reconciler/tests/fixtures/intent-minimal.yaml \
-            --lock "$LOCK_PATH" \
-            --experimental
+          test ! -d "$RENDER_DIR"
+          uv run --with pyyaml --with jsonschema --with jinja2 \
+            python -m reconciler apply \
+              --intent reconciler/tests/fixtures/intent-minimal.yaml \
+              --lock "$LOCK_PATH" \
+              --render-templates-to "$RENDER_DIR" \
+              --experimental
           test -f "$LOCK_PATH"
+          test -f "$RENDER_DIR/pr-management-triage/comment-templates.md"
           uv run --with pyyaml --with jsonschema python -c "
           import json, yaml, os, sys
           from jsonschema import Draft202012Validator
