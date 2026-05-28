@@ -6,22 +6,6 @@
   - [Severity legend](#severity-legend)
   - [P0 — broken on main](#p0--broken-on-main)
     - [1. `skill-validator` pytest now fails on main](#1-skill-validator-pytest-now-fails-on-main)
-    - [2. Lychee broken links](#2-lychee-broken-links)
-    - [3. Pre-commit (prek) failed on every PR](#3-pre-commit-prek-failed-on-every-pr)
-  - [P1 — documented but does not work](#p1--documented-but-does-not-work)
-    - [4. `python -m reconciler` from adopter cwd](#4-python--m-reconciler-from-adopter-cwd)
-    - [5. setup-steward description/body mismatch](#5-setup-steward-descriptionbody-mismatch)
-    - [6. pr-management-triage template renders into a directory the skill does not read](#6-pr-management-triage-template-renders-into-a-directory-the-skill-does-not-read)
-  - [P2 — semantic changes beyond reorganization](#p2--semantic-changes-beyond-reorganization)
-    - [7. setup-steward manifest version bump](#7-setup-steward-manifest-version-bump)
-    - [8. pr-management-triage manifest extended](#8-pr-management-triage-manifest-extended)
-    - [9. `.gitignore` behavioral change](#9-gitignore-behavioral-change)
-    - [10. License header style inconsistency](#10-license-header-style-inconsistency)
-  - [P2 — process drift](#p2--process-drift)
-    - [11. CI failures merged without investigation](#11-ci-failures-merged-without-investigation)
-    - [12. Example lock determinism untested](#12-example-lock-determinism-untested)
-  - [Summary](#summary)
-  - [Honest answer](#honest-answer)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -45,11 +29,11 @@ This document is intentionally critical. The work shipped; this is the followup 
 
 ### 1. `skill-validator` pytest now fails on main
 
-```
+```text
 .claude/skills/setup-steward/SKILL.md:1:
 description + when_to_use is 1758 chars; Claude Code truncates past 1536
 (description=1428, when_to_use=330)
-```
+```text
 
 PR 9 extended `setup-steward` SKILL.md description to advertise Model C. The combined frontmatter now exceeds the 1536-character truncation limit Claude Code enforces.
 
@@ -67,12 +51,12 @@ Lychee failed on every one of the 9 PRs. The broken references on main:
 
 ### 3. Pre-commit (prek) failed on every PR
 
-```
+```text
 markdownlint........Failed (exit code 1)
   reconciler/README.md:36 MD040/fenced-code-language
   ...more across the new docs/adoption/, docs/rfcs/, reconciler/ files
 Add TOC for Markdown and RST files........Failed
-```
+```text
 
 Two classes of failure:
 - MD040: fenced code blocks need a language tag. Most of my new docs have `\`\`\`` blocks without a language (e.g. shell output, raw lock excerpts).
@@ -90,7 +74,7 @@ The hook would have surfaced these locally if I had run it. I did not.
 cd <adopter-root>
 uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler plan
-```
+```text
 
 Reproduced empirically: this fails with `No module named reconciler` because the reconciler package lives at `<adopter>/.apache-steward/reconciler/` (gitignored snapshot) and Python does not look there by default.
 
@@ -103,7 +87,7 @@ uv run ... python -m reconciler plan --intent ../.apache-steward.intent.yaml --l
 # Or set PYTHONPATH
 PYTHONPATH=.apache-steward uv run ... python -m reconciler plan
 # Or ship a `magpie` console-script entrypoint that knows the snapshot location
-```
+```text
 
 Until one of these is added (and the docs updated), every Model C adopter following the README hits the wall at step 3.
 
@@ -142,9 +126,9 @@ Net effect: the rendered file is generated but ignored. The skill continues oper
 
 New files use the short SPDX form:
 
-```
+```text
 # SPDX-License-Identifier: Apache-2.0
-```
+```text
 
 Existing project files use the full ASF license block (~9 lines of Apache 2.0 boilerplate). For ASF source releases the full block may be required by policy. The codebase now mixes both styles.
 
