@@ -1,3 +1,29 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [RFC-MAG-0002: Model C structural impact](#rfc-mag-0002-model-c-structural-impact)
+- [Modelo C: o que muda na estrutura do Magpie](#modelo-c-o-que-muda-na-estrutura-do-magpie)
+  - [Sumário do que precisa existir](#sum%C3%A1rio-do-que-precisa-existir)
+  - [Estrutura nova do repositório Magpie (fonte)](#estrutura-nova-do-reposit%C3%B3rio-magpie-fonte)
+    - [Mudanças destacadas](#mudan%C3%A7as-destacadas)
+  - [Estrutura nova do repositório adopter](#estrutura-nova-do-reposit%C3%B3rio-adopter)
+    - [Diferenças do estado atual](#diferen%C3%A7as-do-estado-atual)
+  - [Schema dos arquivos novos](#schema-dos-arquivos-novos)
+    - [Skill manifest (em cada skill)](#skill-manifest-em-cada-skill)
+    - [Capability taxonomy](#capability-taxonomy)
+    - [Adopter intent](#adopter-intent)
+    - [Adopter lock](#adopter-lock)
+  - [O que o reconciler faz, passo a passo](#o-que-o-reconciler-faz-passo-a-passo)
+  - [Mudanças nas skills existentes](#mudan%C3%A7as-nas-skills-existentes)
+  - [Mudanças nos templates por adopter](#mudan%C3%A7as-nos-templates-por-adopter)
+  - [Mudanças nos docs](#mudan%C3%A7as-nos-docs)
+  - [Sequência de migração proposta](#sequ%C3%AAncia-de-migra%C3%A7%C3%A3o-proposta)
+  - [Riscos e mitigações](#riscos-e-mitiga%C3%A7%C3%B5es)
+  - [O que **não** muda](#o-que-n%C3%A3o-muda)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # RFC-MAG-0002: Model C structural impact
@@ -33,7 +59,7 @@ Lista das peças novas que o Modelo C exige. Detalhadas nas seções seguintes.
 
 Comparação direta com o layout atual.
 
-```
+```text
 magpie/
 ├── README.md
 ├── LICENSE NOTICE .asf.yaml pyproject.toml uv.lock
@@ -119,7 +145,7 @@ magpie/
 
 Hoje o adopter ganha symlinks dentro de `.claude/skills/`, um lock parcial (só install pin), e um diretório de overrides solto. Com Modelo C:
 
-```
+```text
 <adopter-repo>/
 ├── .apache-steward.intent.yaml             # SOURCE OF TRUTH, committed
 ├── .apache-steward.lock                    # gerado por `magpie apply`, committed
@@ -270,7 +296,7 @@ Custo: cada skill hoje (~17) precisa ser auditada e ganhar manifest. Estimativa 
 
 Hoje `projects/_template/` tem 20+ arquivos `.md` estáticos. Esses arquivos passam a viver dentro das skills que de fato os consomem, como Jinja2 templates parametrizáveis:
 
-```
+```text
 skills/pr-management-triage/templates/
 ├── triage-ci-check-map.md.j2
 ├── triage-comment-templates.md.j2

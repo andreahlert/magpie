@@ -5,6 +5,8 @@
 - [Apache Steward (to be renamed)](#apache-steward-to-be-renamed)
   - [How adoption works](#how-adoption-works)
   - [Adopting the framework](#adopting-the-framework)
+    - [Quick start (Model C, default)](#quick-start-model-c-default)
+    - [Legacy adoption flow](#legacy-adoption-flow)
     - [1. Bootstrap (copy-pasteable shell)](#1-bootstrap-copy-pasteable-shell)
     - [2. Skill takeover](#2-skill-takeover)
     - [Subsequent contributors](#subsequent-contributors)
@@ -118,12 +120,13 @@ cp .apache-steward/projects/_example-airflow/.apache-steward.intent.yaml \
    .apache-steward.intent.yaml
 $EDITOR .apache-steward.intent.yaml
 
-# 3. See what it resolves to.
-uv run --with pyyaml --with jsonschema --with jinja2 \
+# 3. See what it resolves to. PYTHONPATH points at the bootstrapped
+#    snapshot so Python can import the reconciler from there.
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler plan
 
 # 4. Apply.
-uv run --with pyyaml --with jsonschema --with jinja2 \
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler apply \
     --symlink-target .claude/skills \
     --render-templates-to .apache-steward-overrides/rendered

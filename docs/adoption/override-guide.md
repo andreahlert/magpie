@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Override guide](#override-guide)
+  - [The mechanisms](#the-mechanisms)
+  - [When to use each](#when-to-use-each)
+    - [`exclude`](#exclude)
+    - [`force-include`](#force-include)
+    - [`pin`](#pin)
+    - [`params`](#params)
+  - [How many overrides is too many](#how-many-overrides-is-too-many)
+  - [Reading the lock for override impact](#reading-the-lock-for-override-impact)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Override guide

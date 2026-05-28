@@ -1,3 +1,20 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Plan and apply cycle](#plan-and-apply-cycle)
+  - [Vocabulary](#vocabulary)
+  - [The cycle](#the-cycle)
+  - [Typical commands](#typical-commands)
+    - [See what would change](#see-what-would-change)
+    - [Apply a change](#apply-a-change)
+    - [Dry-run](#dry-run)
+    - [Upgrade the framework](#upgrade-the-framework)
+    - [When `apply` removes a skill](#when-apply-removes-a-skill)
+  - [Reviewing in PR](#reviewing-in-pr)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Plan and apply cycle
@@ -14,7 +31,7 @@ Day-to-day workflow against an existing adoption.
 
 ## The cycle
 
-```
+```text
 edit intent  ->  magpie plan  ->  read diff  ->  magpie apply  ->  commit
                                        |
                                        +--- iterate if the diff surprises you
@@ -25,7 +42,7 @@ edit intent  ->  magpie plan  ->  read diff  ->  magpie apply  ->  commit
 ### See what would change
 
 ```bash
-uv run --with pyyaml --with jsonschema --with jinja2 \
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler plan
 ```
 
@@ -34,7 +51,7 @@ Reads `.apache-steward.intent.yaml` and `.apache-steward.lock` from cwd. Exits 0
 ### Apply a change
 
 ```bash
-uv run --with pyyaml --with jsonschema --with jinja2 \
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
   python -m reconciler apply \
     --symlink-target .claude/skills \
     --render-templates-to .apache-steward-overrides/rendered
@@ -61,7 +78,7 @@ Computes everything, writes nothing. The stdout summary reports what would happe
 After `setup-steward upgrade` refreshes the snapshot:
 
 ```bash
-uv run --with pyyaml --with jsonschema --with jinja2 python -m reconciler plan
+PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 python -m reconciler plan
 ```
 
 If new skills landed in your declared domains, they appear as adds. New manifests may also change exclusion reasons for skills you previously had.
@@ -70,7 +87,7 @@ If new skills landed in your declared domains, they appear as adds. New manifest
 
 Plan rows with `-` mean the skill was in your previous lock but is no longer resolved. The detail field carries the reason:
 
-```
+```text
 - some-skill          intent.overrides.exclude
 - another-skill       intent.capabilities.integrations
 ```

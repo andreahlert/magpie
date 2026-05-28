@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Registry](#registry)
+  - [Files](#files)
+  - [How it's built](#how-its-built)
+  - [How CI enforces freshness](#how-ci-enforces-freshness)
+  - [Schema](#schema)
+  - [Why JSON, not YAML](#why-json-not-yaml)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Registry

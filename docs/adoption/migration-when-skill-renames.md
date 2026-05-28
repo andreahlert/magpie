@@ -1,3 +1,20 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Migration: what happens when a framework version renames a skill](#migration-what-happens-when-a-framework-version-renames-a-skill)
+  - [Today](#today)
+  - [When a skill renames](#when-a-skill-renames)
+    - [What you see](#what-you-see)
+    - [If the skill is referenced in your `overrides`](#if-the-skill-is-referenced-in-your-overrides)
+  - [When a skill splits](#when-a-skill-splits)
+  - [When a skill merges](#when-a-skill-merges)
+  - [When a skill retires](#when-a-skill-retires)
+  - [Why this matters for project autonomy](#why-this-matters-for-project-autonomy)
+  - [How adopter PRs look across a rename](#how-adopter-prs-look-across-a-rename)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Migration: what happens when a framework version renames a skill
@@ -29,7 +46,7 @@ notes: |
 
 On the next `magpie plan` against a refreshed framework snapshot:
 
-```
+```text
 Plan: +1 -1 ~0 =0
 
 Migrations applied:
