@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Canonical list of work domains a skill can claim.
+#
+# Lifecycle and rules: see README.md in this directory.
+
+schema-version: 1
+
+domains:
+  - id: security
+    name: Security report flow
+    description: >
+      Inbound security report triage, deduplication, reporter
+      correspondence, CVE allocation, embargo handling,
+      publication. All work that lives behind the project's
+      private security mailing list.
+
+  - id: pr-queue
+    name: Pull request queue
+    description: >
+      Triage and management of public PR queues: labels, scope
+      detection, CI check correlation, code review at varying
+      depth, stale-PR sweeps.
+
+  - id: issue-queue
+    name: Issue tracker queue
+    description: >
+      Triage of incoming issues, duplicate detection,
+      reassessment of stale or EOL issues, routing to the right
+      maintainer or area label.
+
+  - id: contributor-lifecycle
+    name: Contributor lifecycle
+    description: >
+      Onboarding new contributors, mentoring on first PRs,
+      nomination readiness briefs for committer and PMC
+      promotion threads.
+
+  - id: dev-cycle
+    name: Developer-side dev cycle
+    description: >
+      Skills the maintainer or contributor invokes on their own
+      working tree: pre-flight self-review, multi-agent review
+      pipelines, scoped agent-drafted patches under the
+      developer's driver's seat.
+
+  - id: release-management
+    name: Release management
+    description: >
+      Release train coordination, milestone hygiene, changelog
+      assembly, post-release follow-up.
+
+  - id: framework-meta
+    name: Framework self-maintenance
+    description: >
+      Skills the framework uses on itself: install, verify,
+      upgrade, drift detection, shared config sync. Cross-cuts
+      every other domain.

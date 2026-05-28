@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# External systems a skill can require. A skill lists the
+# integrations it actually touches; the reconciler excludes
+# skills whose integrations are not all present in the
+# adopter's intent.
+#
+# Lifecycle and rules: see README.md.
+
+schema-version: 1
+
+integrations:
+  - id: github
+    name: GitHub
+    description: GitHub repository, issues, PRs, releases, advisories.
+
+  - id: jira
+    name: Jira
+    description: Atlassian Jira tracker.
+
+  - id: gmail
+    name: Gmail
+    description: Gmail mailbox via OAuth (typical for a maintainer's address).
+
+  - id: ponymail
+    name: Apache Ponymail
+    description: ASF Ponymail public archive search and retrieval.
+
+  - id: mail-source
+    name: Generic mail source
+    description: >
+      Plain IMAP or mbox source. Used by adopters that route
+      security mail through something other than Gmail.
+
+  - id: vulnogram
+    name: Vulnogram (CVE)
+    description: ASF CVE submission flow via Vulnogram.
+
+  - id: cve-org
+    name: cve.org
+    description: Direct cve.org API for CVE record verification.
+
+  - id: privacy-llm
+    name: Privacy-LLM gateway
+    description: >
+      Local or self-hosted LLM gateway used when content cannot
+      reach a third-party model provider. Required by skills
+      that touch pre-disclosure content.
+
+  - id: sandbox
+    name: Sandbox / agent isolation
+    description: >
+      Local sandbox infrastructure (settings.json sandbox
+      block, claude-iso wrapper). Required by every skill that
+      handles privileged content.
