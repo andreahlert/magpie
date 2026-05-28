@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+schema-version: 1
+id: issue-reassess
+version: 0.1.0
+domains: [issue-queue]
+audiences: [maintainer-inbound]
+risk-tier: read-only
+integrations: [github, sandbox]
+requires: [issue-reproducer]
+status: experimental

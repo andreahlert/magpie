@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+schema-version: 1
+id: security-tracker-stats-dashboard
+version: 1.0.0
+domains: [security]
+audiences: [security-pmc]
+risk-tier: read-only
+integrations: [github, sandbox]
+status: stable

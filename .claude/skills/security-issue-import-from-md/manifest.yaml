@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# Schema: ../../../reconciler/schemas/skill-manifest.schema.json
+schema-version: 1
+id: security-issue-import-from-md
+version: 1.0.0
+domains: [security]
+audiences: [security-pmc]
+risk-tier: write-comment
+integrations: [github, privacy-llm, sandbox]
+requires: [setup-isolated-setup-install]
+status: stable
