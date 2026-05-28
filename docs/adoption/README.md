@@ -19,18 +19,16 @@ Adoption under the **intent + lock** model. As of PR 9 this is the default flow.
 
 1. **Bootstrap the framework snapshot** into your repo. Same shell recipe as before. See [`../setup/install-recipes.md`](../setup/install-recipes.md).
 2. **Author your intent.** Copy [`projects/_example-airflow/.apache-steward.intent.yaml`](../../projects/_example-airflow/.apache-steward.intent.yaml) to your repo root as `.apache-steward.intent.yaml`. Edit four blocks: `capabilities`, `overrides.exclude`, `overrides.pin`, `overrides.params`.
-3. **Plan and apply.** Commands prepend `PYTHONPATH=.apache-steward` so Python finds the reconciler inside the bootstrapped snapshot at `<adopter>/.apache-steward/reconciler/` (gitignored, not on default path).
+3. **Plan and apply.** Commands point `uv` at the reconciler's `pyproject.toml` + `uv.lock` inside the bootstrapped snapshot via `--project`. The lockfile pins reconciler deps (PyYAML included) so the serialised lock checksum is reproducible across machines.
 
 ```bash
 # See what would happen
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
-  python -m reconciler plan
+uv run --project .apache-steward/reconciler magpie-reconciler plan
 
 # Materialise: write lock + symlinks + render templates
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
-  python -m reconciler apply \
-    --symlink-target .claude/skills \
-    --render-templates-to .apache-steward-overrides/rendered
+uv run --project .apache-steward/reconciler magpie-reconciler apply \
+  --symlink-target .claude/skills \
+  --render-templates-to .apache-steward-overrides/rendered
 ```
 
 Commit:

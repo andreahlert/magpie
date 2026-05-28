@@ -154,15 +154,15 @@ The correct discipline would have been: read every check, run pre-commit locally
 | 1 | P0 | skill-validator pytest broken on main (setup-steward description over 1536 chars) | **fixed**, description shrunk to 1197 chars + 331 when_to_use = 1528 (< 1536); `pytest -k test_real_repo_passes` passes |
 | 2 | P0 | Lychee broken anchor + broken file path | **fixed**, `agent/taxonomy/README.md` link corrected; `docs/setup/README.md` TOC re-rendered via doctoc |
 | 3 | P0 | prek failed on every PR (MD040, doctoc, link-check) | **fixed**, 9 MD040 blocks tagged `text`, doctoc re-run across new docs, Portuguese RFCs excluded in `.typos.toml`; `prek run --all-files` 0 failures |
-| 4 | P1 | `python -m reconciler` from adopter cwd does not resolve module | **fixed**, every adopter-facing command prepended with `PYTHONPATH=.apache-steward`; verified locally against simulated adopter layout |
+| 4 | P1 | `python -m reconciler` from adopter cwd does not resolve module | **fixed (final)**, reconciler now ships `pyproject.toml` + `uv.lock` (src-layout, console-script `magpie-reconciler`); adopter command is `uv run --project .apache-steward/reconciler magpie-reconciler plan`. PYTHONPATH workaround from the first cleanup PR removed. |
 | 5 | P1 | setup-steward description advertises a flow the body does not implement | **fixed**, description reverted to a neutral one-liner pointing at `docs/adoption/`; body remains the legacy adopter flow which matches |
 | 6 | P1 | pr-management-triage rendered template lands in dir skill does not read | **documented**, NOTE block prepended to the `.j2` template referring back to this audit; full fix is a skill body rewrite, follow-up |
 | 7 | P2 | setup-steward version 1.0.0 → 2.0.0 | accepted, semver justified |
 | 8 | P2 | pr-management-triage manifest gained `templates:` + `params:` | accepted, descriptive metadata |
 | 9 | P2 | `.gitignore` semantic changes (.venv, !issue-reassess) | accepted, both deliberate |
-| 10 | P2 | License header style mixed (SPDX-only vs full ASF block) | open, follow-up to align new files to full ASF block before ASF release |
+| 10 | P2 | License header style mixed (SPDX-only vs full ASF block) | **accepted policy**, new files use SPDX-only per [Apache src-headers policy](https://www.apache.org/legal/src-headers.html) which permits SPDX when LICENSE + NOTICE sit at the repo root (both present). Existing ASF-boilerplate files left untouched; alignment via codemod at first release. |
 | 11 | P2 | Merged through CI fails on every PR | accepted, fork lacks branch protection; cleanup PR runs prek + skill-validator + reconciler tests locally before push |
-| 12 | P2 | Lock determinism not bisected against PyYAML versions | open, follow-up to pin PyYAML or add bisect job |
+| 12 | P2 | Lock determinism not bisected against PyYAML versions | **fixed**, `reconciler/pyproject.toml` pins PyYAML to `>=6.0.2,<7` and `reconciler/uv.lock` records exact wheel hashes; CI installs via `uv sync --frozen`-equivalent through `uv run --project reconciler`. PyYAML 7.x or breaking serialisation change becomes an explicit PR with diff. |
 
 ## Honest answer
 

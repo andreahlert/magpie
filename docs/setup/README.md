@@ -76,14 +76,14 @@ new dev machine
 isolated setup installed
   ↓ author .apache-steward.intent.yaml
     (start from projects/_example-airflow/)
-  ↓ python -m reconciler plan
-  ↓ python -m reconciler apply
+  ↓ uv run --project .apache-steward/reconciler magpie-reconciler plan
+  ↓ uv run --project .apache-steward/reconciler magpie-reconciler apply
         --symlink-target .claude/skills
         --render-templates-to .apache-steward-overrides/rendered
 adopted
   ↓ setup-isolated-setup-update          (periodic)
   ↓ setup-steward upgrade                (when framework releases)
-  ↓ python -m reconciler plan -> apply   (after every snapshot upgrade)
+  ↓ magpie-reconciler plan -> apply      (after every snapshot upgrade)
 ```
 
 ## Legacy lifecycle (family-based takeover)

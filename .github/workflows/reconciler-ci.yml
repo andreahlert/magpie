@@ -55,18 +55,19 @@ jobs:
         with:
           persist-credentials: false
 
-      # uv brings its own Python. The reconciler is stdlib + PyYAML +
-      # jsonschema; no project-scoped lockfile yet, so we install the
-      # two deps inline via uv's --with flag.
+      # uv brings its own Python. Reconciler deps are pinned in
+      # `reconciler/pyproject.toml` + `reconciler/uv.lock`; `uv sync`
+      # honours the lock so checksum-sensitive lock output is
+      # deterministic across runs.
       - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
           enable-cache: true
 
       - name: Validate taxonomy
-        run: uv run --with pyyaml python reconciler/validate_taxonomy.py
+        run: uv run --project reconciler --group dev python reconciler/validate_taxonomy.py
 
       - name: Validate skill manifests
-        run: uv run --with pyyaml --with jsonschema python reconciler/validate_manifests.py
+        run: uv run --project reconciler --group dev python reconciler/validate_manifests.py
 
       # The on-disk registry must match what would be generated from
       # current manifests. A manifest edit without a registry rebuild
@@ -74,10 +75,11 @@ jobs:
       # that adopter tooling can read a single canonical file without
       # walking the tree.
       - name: Check registry is up to date
-        run: uv run --with pyyaml python reconciler/build_registry.py --check --stable-timestamp
+        run: uv run --project reconciler --group dev python reconciler/build_registry.py --check --stable-timestamp
 
-      - name: Run reconciler unit tests
-        run: uv run --with pyyaml --with jsonschema --with jinja2 --with pytest pytest reconciler/tests/ -v
+      # Reconciler pytest runs in the per-project matrix in
+      # `tests.yml` to keep the per-project pass/fail signal in CI
+      # consistent with the other Python projects under `tools/`.
 
       - name: Smoke test plan CLI against fixture intent
         # End-to-end against the real registry. Exit 2 is expected
@@ -85,7 +87,7 @@ jobs:
         # surfaces changes, which is the contractual exit code.
         run: |
           set +e
-          uv run --with pyyaml --with jsonschema python -m reconciler plan \
+          uv run --project reconciler --group dev magpie-reconciler plan \
             --intent reconciler/tests/fixtures/intent-minimal.yaml \
             --lock /nonexistent.lock
           rc=$?
@@ -95,7 +97,6 @@ jobs:
           fi
 
       - name: Smoke test apply CLI in dry-run and write modes
-        # Apply is opt-in via --experimental during the PR 6 rollout.
         # Dry-run writes nothing; the subsequent real run produces a
         # lock that must validate against lock.schema.json plus
         # renders the Jinja2 templates declared by resolved skills.
@@ -105,23 +106,20 @@ jobs:
         run: |
           set -e
           mkdir -p "$(dirname "$LOCK_PATH")"
-          uv run --with pyyaml --with jsonschema --with jinja2 \
-            python -m reconciler apply \
-              --intent reconciler/tests/fixtures/intent-minimal.yaml \
-              --lock "$LOCK_PATH" \
-              --render-templates-to "$RENDER_DIR" \
-              --experimental --dry-run
+          uv run --project reconciler --group dev magpie-reconciler apply \
+            --intent reconciler/tests/fixtures/intent-minimal.yaml \
+            --lock "$LOCK_PATH" \
+            --render-templates-to "$RENDER_DIR" \
+            --dry-run
           test ! -f "$LOCK_PATH"
           test ! -d "$RENDER_DIR"
-          uv run --with pyyaml --with jsonschema --with jinja2 \
-            python -m reconciler apply \
-              --intent reconciler/tests/fixtures/intent-minimal.yaml \
-              --lock "$LOCK_PATH" \
-              --render-templates-to "$RENDER_DIR" \
-              --experimental
+          uv run --project reconciler --group dev magpie-reconciler apply \
+            --intent reconciler/tests/fixtures/intent-minimal.yaml \
+            --lock "$LOCK_PATH" \
+            --render-templates-to "$RENDER_DIR"
           test -f "$LOCK_PATH"
           test -f "$RENDER_DIR/pr-management-triage/comment-templates.md"
-          uv run --with pyyaml --with jsonschema python -c "
+          uv run --project reconciler --group dev python -c "
           import json, yaml, os, sys
           from jsonschema import Draft202012Validator
           schema = json.load(open('reconciler/schemas/lock.schema.json'))

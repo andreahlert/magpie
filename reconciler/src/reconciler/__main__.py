@@ -63,9 +63,12 @@ def _load_json(path: Path) -> dict:
 def _find_framework_root(intent_path: Path, explicit: Path | None) -> Path:
     if explicit:
         return explicit.resolve()
-    # When running inside the framework checkout the layout is fixed:
-    # walk up from this file's location.
-    return Path(__file__).resolve().parent.parent
+    # When running inside the framework checkout (or its adopter
+    # snapshot) the layout is fixed: this file sits at
+    #   <framework-root>/reconciler/src/reconciler/__main__.py
+    # so walk up four parents.
+    here = Path(__file__).resolve()
+    return here.parent.parent.parent.parent
 
 
 def _load_taxonomy(framework_root: Path) -> dict:
