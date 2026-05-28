@@ -120,16 +120,16 @@ cp .apache-steward/projects/_example-airflow/.apache-steward.intent.yaml \
    .apache-steward.intent.yaml
 $EDITOR .apache-steward.intent.yaml
 
-# 3. See what it resolves to. PYTHONPATH points at the bootstrapped
-#    snapshot so Python can import the reconciler from there.
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
-  python -m reconciler plan
+# 3. See what it resolves to. `--project` points uv at the
+#    reconciler's pyproject + lock inside the bootstrapped
+#    snapshot; deps are installed via the lockfile, so the
+#    serialised lock checksum is reproducible across machines.
+uv run --project .apache-steward/reconciler magpie-reconciler plan
 
 # 4. Apply.
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
-  python -m reconciler apply \
-    --symlink-target .claude/skills \
-    --render-templates-to .apache-steward-overrides/rendered
+uv run --project .apache-steward/reconciler magpie-reconciler apply \
+  --symlink-target .claude/skills \
+  --render-templates-to .apache-steward-overrides/rendered
 
 # 5. Commit intent + lock + (optionally) rendered templates.
 ```

@@ -49,28 +49,29 @@ The reconciler is the **only** place capability resolution lives. Keeping the en
 
 ## Running today
 
+Reconciler ships its own `pyproject.toml` + `uv.lock` (since the audit-cleanup PR). Deps (PyYAML, jsonschema, Jinja2) are pinned in the lock so the serialised lock checksum is reproducible across machines.
+
 ```bash
 # Validate the canonical taxonomy
-uv run --with pyyaml python reconciler/validate_taxonomy.py
+uv run --project reconciler --group dev python reconciler/validate_taxonomy.py
 
 # Validate every skill manifest against schema + taxonomy
-uv run --with pyyaml --with jsonschema python reconciler/validate_manifests.py
+uv run --project reconciler --group dev python reconciler/validate_manifests.py
 
 # Rebuild the registry from manifests (use --check in CI)
-uv run --with pyyaml python reconciler/build_registry.py --stable-timestamp
+uv run --project reconciler --group dev python reconciler/build_registry.py --stable-timestamp
 
 # Generate a plan against an intent file
-uv run --with pyyaml --with jsonschema python -m reconciler plan \
+uv run --project reconciler --group dev magpie-reconciler plan \
   --intent path/to/.apache-steward.intent.yaml \
   --lock path/to/.apache-steward.lock
 
-# Apply: write the resolved lock (opt-in via --experimental
-# during PR 6 rollout). Optional --symlink-target materialises
-# one symlink per resolved skill into the framework checkout.
-uv run --with pyyaml --with jsonschema python -m reconciler apply \
+# Apply: write the resolved lock. Optional --symlink-target
+# materialises one symlink per resolved skill into the framework
+# checkout.
+uv run --project reconciler --group dev magpie-reconciler apply \
   --intent path/to/.apache-steward.intent.yaml \
-  --lock   path/to/.apache-steward.lock \
-  --experimental
+  --lock   path/to/.apache-steward.lock
 # Add --dry-run to compute the result without writing.
 # Add --symlink-target <adopter>/.claude/skills to also wire up symlinks.
 # Add --render-templates-to <adopter>/.apache-steward-overrides/rendered
@@ -78,7 +79,7 @@ uv run --with pyyaml --with jsonschema python -m reconciler apply \
 # params (defaults + intent.overrides.params).
 
 # Run the unit test suite
-uv run --with pyyaml --with jsonschema --with pytest pytest reconciler/tests/ -v
+uv run --project reconciler --group dev pytest reconciler/tests/ -v
 ```
 
 CI runs all of the above on every PR that touches taxonomy, manifests, registry, or reconciler code.

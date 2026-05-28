@@ -42,8 +42,7 @@ edit intent  ->  magpie plan  ->  read diff  ->  magpie apply  ->  commit
 ### See what would change
 
 ```bash
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
-  python -m reconciler plan
+uv run --project .apache-steward/reconciler magpie-reconciler plan
 ```
 
 Reads `.apache-steward.intent.yaml` and `.apache-steward.lock` from cwd. Exits 0 if nothing to do, 2 if changes are pending, 1 on error.
@@ -51,10 +50,9 @@ Reads `.apache-steward.intent.yaml` and `.apache-steward.lock` from cwd. Exits 0
 ### Apply a change
 
 ```bash
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 \
-  python -m reconciler apply \
-    --symlink-target .claude/skills \
-    --render-templates-to .apache-steward-overrides/rendered
+uv run --project .apache-steward/reconciler magpie-reconciler apply \
+  --symlink-target .claude/skills \
+  --render-templates-to .apache-steward-overrides/rendered
 ```
 
 Writes:
@@ -78,7 +76,7 @@ Computes everything, writes nothing. The stdout summary reports what would happe
 After `setup-steward upgrade` refreshes the snapshot:
 
 ```bash
-PYTHONPATH=.apache-steward uv run --with pyyaml --with jsonschema --with jinja2 python -m reconciler plan
+uv run --project .apache-steward/reconciler magpie-reconciler plan
 ```
 
 If new skills landed in your declared domains, they appear as adds. New manifests may also change exclusion reasons for skills you previously had.
