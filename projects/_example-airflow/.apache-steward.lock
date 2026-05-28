@@ -1,0 +1,195 @@
+checksum: sha256:871a00a9ba370a20698206fbf491ba9ff6eaa4fef8a8af242f7784d0460eb60f
+exclusions:
+  issue-reassess:
+    reason: intent.overrides.exclude
+  issue-reassess-stats:
+    reason: intent.overrides.exclude
+  write-skill:
+    reason: intent.capabilities.audiences
+framework-version: 0.0.0
+generated-at: '1970-01-01T00:00:00Z'
+generated-from: .apache-steward.intent.yaml
+schema-version: 1
+skills:
+  contributor-nomination:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 0.1.0
+  issue-fix-workflow:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 0.1.0
+  issue-reproducer:
+    integrations-resolved:
+    - github
+    - sandbox
+    source: intent.domains
+    version: 0.1.0
+  issue-triage:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 0.1.0
+  list-steward-skills:
+    source: intent.domains
+    version: 1.0.0
+  pr-management-code-review:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 0.1.0
+  pr-management-mentor:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 0.1.0
+  pr-management-stats:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 0.1.0
+  pr-management-triage:
+    integrations-resolved:
+    - github
+    params:
+      ai_attribution_footer: '*Drafted by an agent under maintainer review. See [our
+        two-stage
+
+        triage rationale](https://github.com/apache/airflow/blob/main/contributing-docs/05_pull_requests.rst#two-stage-triage)
+
+        for context.*
+
+        '
+      docs_building_url: https://github.com/apache/airflow/blob/main/contributing-docs/13_documentation_building.rst
+      helm_tests_url: https://github.com/apache/airflow/blob/main/contributing-docs/testing/helm_unit_tests.rst
+      k8s_tests_url: https://github.com/apache/airflow/blob/main/contributing-docs/testing/k8s_tests.rst
+      merge_conflicts_rebase_url: https://github.com/apache/airflow/blob/main/contributing-docs/10_working_with_git.rst#rebasing-rather-than-merging
+      project_communication_channel: '#airflow-development'
+      project_communication_url: https://apache-airflow.slack.com/archives/CCQB40SQJ
+      project_display_name: Apache Airflow
+      provider_testing_url: https://github.com/apache/airflow/blob/main/contributing-docs/testing/unit_tests.rst#running-unit-tests-for-providers
+      quality_criteria_url: https://github.com/apache/airflow/blob/main/contributing-docs/05_pull_requests.rst#pull-request-quality-criteria
+      static_checks_url: https://github.com/apache/airflow/blob/main/contributing-docs/08_static_code_checks.rst
+      testing_url: https://github.com/apache/airflow/tree/main/contributing-docs/testing
+      triage_marker_text: Pull Request quality criteria
+      two_stage_triage_rationale_url: https://github.com/apache/airflow/blob/main/contributing-docs/05_pull_requests.rst#two-stage-triage
+    source: intent.domains
+    version: 0.2.0
+  security-cve-allocate:
+    integrations-resolved:
+    - github
+    - privacy-llm
+    - sandbox
+    - vulnogram
+    source: intent.domains
+    version: 1.0.0
+  security-issue-deduplicate:
+    integrations-resolved:
+    - github
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  security-issue-fix:
+    integrations-resolved:
+    - github
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 0.5.0
+  security-issue-import:
+    integrations-resolved:
+    - github
+    - gmail
+    - privacy-llm
+    - sandbox
+    params:
+      confirmation-reply-locale: en
+      default-window-days: 14
+      needs-triage-status: Needs triage
+      security-list-mailbox: label:security-list
+      tracker-repo: airflow-s/airflow-s
+      wide-sweep-days: 90
+    source: intent.domains
+    version: 1.0.0
+  security-issue-import-from-md:
+    integrations-resolved:
+    - github
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  security-issue-import-from-pr:
+    integrations-resolved:
+    - github
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  security-issue-invalidate:
+    integrations-resolved:
+    - github
+    - gmail
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  security-issue-sync:
+    integrations-resolved:
+    - github
+    - gmail
+    - ponymail
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  security-issue-triage:
+    integrations-resolved:
+    - github
+    - privacy-llm
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  security-tracker-stats-dashboard:
+    integrations-resolved:
+    - github
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  setup-isolated-setup-doctor:
+    integrations-resolved:
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  setup-isolated-setup-install:
+    integrations-resolved:
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  setup-isolated-setup-update:
+    integrations-resolved:
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  setup-isolated-setup-verify:
+    integrations-resolved:
+    - sandbox
+    source: intent.domains
+    version: 1.0.0
+  setup-override-upstream:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 1.0.0
+  setup-shared-config-sync:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 1.0.0
+  setup-steward:
+    integrations-resolved:
+    - github
+    source: intent.domains
+    version: 1.0.0

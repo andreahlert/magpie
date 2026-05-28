@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Example adopter intent for Apache Airflow shape. Not the real
+# Airflow PMC's adopted config — illustrative values only. Use as
+# starting point when onboarding a project with similar workflow
+# (large PR queue, active security flow, public mailing list).
+
+schema-version: 1
+
+framework:
+  install:
+    method: git-branch
+    ref: main
+
+capabilities:
+  domains:
+    - security
+    - pr-queue
+    - issue-queue
+    - contributor-lifecycle
+    - framework-meta
+  audiences:
+    - maintainer-inbound
+    - contributor-facing
+    - security-pmc
+    - framework-operator
+  risk-tier-max: draft-pr
+  integrations:
+    - github
+    - gmail
+    - ponymail
+    - vulnogram
+    - privacy-llm
+    - sandbox
+
+overrides:
+  exclude:
+    # Reassessment campaigns are run on demand for this project, not
+    # part of the recurring queue. The skill stays in the catalog
+    # and can be force-included on the rare sweep.
+    - issue-reassess
+    - issue-reassess-stats
+  pin:
+    # Pinned during PMC review of the 1.1.x line, unpin after review.
+    security-issue-import: "1.0.0"
+  params:
+    security-issue-import:
+      security-list-mailbox: "label:security-list"
+      tracker-repo: "airflow-s/airflow-s"
+      default-window-days: 14
+      wide-sweep-days: 90
+      needs-triage-status: "Needs triage"
+      confirmation-reply-locale: en
+    pr-management-triage:
+      project_display_name: "Apache Airflow"
+      quality_criteria_url: "https://github.com/apache/airflow/blob/main/contributing-docs/05_pull_requests.rst#pull-request-quality-criteria"
+      two_stage_triage_rationale_url: "https://github.com/apache/airflow/blob/main/contributing-docs/05_pull_requests.rst#two-stage-triage"
+      merge_conflicts_rebase_url: "https://github.com/apache/airflow/blob/main/contributing-docs/10_working_with_git.rst#rebasing-rather-than-merging"
+      static_checks_url: "https://github.com/apache/airflow/blob/main/contributing-docs/08_static_code_checks.rst"
+      testing_url: "https://github.com/apache/airflow/tree/main/contributing-docs/testing"
+      docs_building_url: "https://github.com/apache/airflow/blob/main/contributing-docs/13_documentation_building.rst"
+      helm_tests_url: "https://github.com/apache/airflow/blob/main/contributing-docs/testing/helm_unit_tests.rst"
+      k8s_tests_url: "https://github.com/apache/airflow/blob/main/contributing-docs/testing/k8s_tests.rst"
+      provider_testing_url: "https://github.com/apache/airflow/blob/main/contributing-docs/testing/unit_tests.rst#running-unit-tests-for-providers"
+      project_communication_channel: "#airflow-development"
+      project_communication_url: "https://apache-airflow.slack.com/archives/CCQB40SQJ"
+      triage_marker_text: "Pull Request quality criteria"
+      ai_attribution_footer: |
+        *Drafted by an agent under maintainer review. See [our two-stage
+        triage rationale](https://github.com/apache/airflow/blob/main/contributing-docs/05_pull_requests.rst#two-stage-triage)
+        for context.*

@@ -219,6 +219,7 @@ def _cmd_apply(args: argparse.Namespace) -> int:
             else None
         ),
         dry_run=args.dry_run,
+        generated_at="1970-01-01T00:00:00Z" if args.stable_timestamp else None,
     )
 
     action = "would write" if args.dry_run else "wrote"
@@ -323,6 +324,15 @@ def main(argv: list[str] | None = None) -> int:
         help=(
             "Required during the PR 6 rollout. Acknowledges that apply is "
             "opt-in and the legacy setup-steward takeover remains supported."
+        ),
+    )
+    apply.add_argument(
+        "--stable-timestamp",
+        action="store_true",
+        help=(
+            "Use a fixed `generated-at` timestamp (1970-01-01T00:00:00Z) so "
+            "the lock is reproducible across runs. Useful for example locks "
+            "checked into the framework's `projects/` directory."
         ),
     )
 
