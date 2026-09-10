@@ -42,24 +42,35 @@ friendlies. Testers welcome!
 
 ## Install
 
-You **adopt** Magpie once — the decision to bring the framework into your
-project — while **installation** is how you carry that out. There are two
-ways to install:
+**Start here → [Quick start](docs/quick-start.md)** — two commands, in the
+agent you already use.
 
-**From an agent marketplace (easiest).** Install the skills directly into your
-agent — Claude Code, Codex, Copilot, Gemini, Cursor, and more — with nothing
-committed to your repository. See
-[`docs/setup/marketplaces.md`](docs/setup/marketplaces.md).
+```text
+/plugin marketplace add apache/magpie              # Claude Code
+/plugin install magpie-setup@apache-magpie         # always take this one
+/plugin install magpie-pr-management@apache-magpie # + whichever families you need
+```
 
-**As a committed snapshot (installed into your repo).** For a project that
-adopts Magpie into its own source — pin a release and let `/magpie-setup`
-install the snapshot, overrides, and drift detection in the adopter repo:
+Install **one plugin per family you actually want** — that keeps the always-on
+context cost proportional (~0.2–2.0k tokens a family). The all-in-one
+`magpie` plugin installs all 74 skills at ~8.6k always-on tokens and is **not
+recommended** unless you genuinely need every family.
+
+Codex, VS Code / Copilot, and Gemini are one-liners too — the
+[quick start](docs/quick-start.md) has all four, plus what to run next to put
+the agent in its sandbox. Nothing is committed to your repository.
+
+**Fallback — the pinned snapshot install.** Use it when a marketplace is not
+an option or not enough: your agent has no plugin mechanism, you need the
+signed ASF source release rather than a git clone, or the project wants every
+contributor and CI job pinned to one committed version with drift detection.
 
 1. [Download / pin a release](https://magpie.apache.org/downloads/)
 2. Set up the symlinks and git-ignores — see
    [`docs/setup/install-recipes.md`](docs/setup/install-recipes.md)
 3. Ask your agent to complete the install: `/magpie-setup install`
-   (`/magpie-setup adopt` is an alias)
+
+The two are complementary, not exclusive.
 
 ## Usage
 
@@ -74,9 +85,24 @@ or
 
 or skill calls starting with a slash, like
 
-> /dependency-audit
+> /magpie-repo-health:dependency-audit
+
+(the family-plugin form, assuming the recommended marketplace install above —
+see [Skill names differ by install method](docs/setup/marketplaces.md#skill-names-differ-by-install-method)
+if you're on the pinned-snapshot fallback instead).
 
 ## Update / maintain
+
+**Marketplace install** (the recommended path above):
+
+- `/plugin marketplace update apache-magpie` then
+  `/plugin update <plugin>@apache-magpie` — refresh the marketplace
+  metadata, then bump the installed plugin(s) to its latest.
+- Add or drop families by installing or uninstalling their plugin —
+  there is no separate "pick families" step once you're on a
+  marketplace install.
+
+**Pinned-snapshot install** (the fallback):
 
 - `/magpie-setup upgrade` — refresh the snapshot to a newer
   framework version + reconcile any overrides against the new
@@ -90,12 +116,15 @@ or skill calls starting with a slash, like
 
 The following skill families ship in the framework, all at `experimental` or
 `stable`, and each skill declares its family in a `family:` frontmatter
-key. At install (and on every upgrade), `/magpie-setup` offers the
-**opt-in** families — and the optional **MCP servers** (`ponymail`,
-`apache-projects`, `gmail-plaintext`) — in a single install choice;
-symlinks for the picked families land in the skill directory.
-The two **always-on** families (`setup`, `utilities`) are wired
-unconditionally and never prompted for.
+key. On the recommended marketplace install, you choose families by which
+per-family plugin(s) you install (see [Install](#install) above) — install
+or uninstall a plugin at any time to add or drop a family. On the
+pinned-snapshot fallback, `/magpie-setup` offers the **opt-in** families —
+and the optional **MCP servers** (`ponymail`, `apache-projects`,
+`gmail-plaintext`) — in a single install choice, and symlinks for the picked
+families land in the skill directory. Either way, the two **always-on**
+families (`setup`, `utilities`) are wired unconditionally and never prompted
+for.
 
 The **Modes** column maps each family to the MISSION agent-assistance
 taxonomy — see [`docs/modes.md`](docs/modes.md) for what each mode

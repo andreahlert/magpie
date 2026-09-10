@@ -3,6 +3,12 @@
 
 # upgrade — refresh the gitignored snapshot per the committed lock
 
+**Scope: the pinned snapshot install.** On the default
+**marketplace** install there is no snapshot and no lock to drift
+— the agent's plugin manager owns the version, and upgrading
+means updating the plugin (see
+[Step 0](#step-0--pre-flight) item 2 for the commands).
+
 The upgrade flow is **drift-driven**. It detects mismatch
 between `<committed-lock>` (project pin) and `<local-lock>`
 (per-machine fetch), then re-installs per the committed lock,
@@ -10,11 +16,11 @@ refreshes symlinks, and reconciles overrides.
 
 Two trigger paths land here:
 
-1. **User-initiated** — explicit `/magpie-setup upgrade`,
+1. **User-initiated** — explicit `setup upgrade`,
    e.g. after a colleague bumped `<committed-lock>` to a
    new framework version and the user wants to align.
 2. **Drift-triggered from a framework skill** — any
-   framework skill (or `/magpie-setup verify`) detected
+   framework skill (or `setup verify`) detected
    drift on its pre-flight check and the user accepted the
    proposal to upgrade.
 
@@ -41,7 +47,7 @@ Both paths run the same flow.
    `git rev-parse --git-common-dir`. If different, stop with:
 
    > *"`upgrade` runs in the main checkout, not a worktree.
-   > From the main: `cd <main-path> && /magpie-setup upgrade`.
+   > From the main: `cd <main-path> && setup upgrade`.
    > Every worktree automatically picks up the refreshed
    > snapshot once the main upgrade lands, because each
    > worktree's `<snapshot-dir>` is a symlink to the main's
@@ -50,8 +56,25 @@ Both paths run the same flow.
    `<main-path>` resolves to
    `$(dirname "$(cd "$(git rev-parse --git-common-dir)" && pwd)")` —
    surface it explicitly so the operator can `cd` there.
-2. Read `<committed-lock>`. If missing, the repo isn't
-   adopted — suggest `/magpie-setup install` and stop.
+2. Read `<committed-lock>`. If missing, this repo is not on the
+   pinned snapshot install. Before saying "not installed",
+   check whether Magpie is **plugin-installed** (the signals in
+   [`install.md` Step M1](install.md#step-m1--is-magpie-already-plugin-installed)).
+   If it is, the upgrade the user wants is the plugin's — print
+   it and stop:
+
+   ```text
+   /plugin marketplace update apache-magpie
+   /plugin update <plugin>@apache-magpie
+   ```
+
+   (Codex: `codex plugin update magpie`; Gemini:
+   `gemini extensions update magpie`.) The marketplace update
+   comes first: `plugin update` compares **version strings**
+   against the local marketplace clone, so skipping it reports
+   "already at the latest version" however far behind the clone
+   has fallen. If neither install is present, suggest
+   `setup install` and stop.
 3. Read `<local-lock>`. If missing (gitignored, fresh
    clone), the local install hasn't been initialised yet —
    route as a recover-snapshot install per the committed
@@ -198,7 +221,7 @@ bootstrap logic. It implements
    in `git status`** at the adopter's committed-skill path.
    The user reviews the diff and commits it as part of the
    upgrade PR; on merge, every other contributor's next
-   `/magpie-setup` run loads the matching version.
+   `setup` run loads the matching version.
 
 The adopter shouldn't modify the bootstrap copy locally —
 the framework's hard rule is *"local mods go in
@@ -401,7 +424,7 @@ rather than pulls in via symlink. Examples:
 - Any future hook or local config the framework adds.
 
 These can drift independently of the snapshot — an
-adopter who never re-runs `/magpie-setup` after a
+adopter who never re-runs `setup` after a
 framework upgrade keeps the old hook content even after the
 snapshot updates. This step closes that gap.
 
@@ -455,7 +478,7 @@ Procedure:
    Filter to the linked worktrees only — skip the main
    checkout (already handled above) and any bare worktrees.
 2. For each linked worktree, invoke
-   `/magpie-setup worktree-init` with that worktree's
+   `setup worktree-init` with that worktree's
    working directory as the `cwd`. The sub-action picks up
    the family set from `<main>/.apache-magpie.lock` (the
    committed lock the worktree shares via git) plus the
@@ -518,7 +541,7 @@ committed project-scope file). Idempotent — already-present
 paths are skipped. If
 `~/.claude/scripts/sandbox-add-project-root.sh` is absent,
 surface as ⚠ in the upgrade summary with a pointer at
-`/magpie-setup-isolated-setup-install` and continue (do not block
+`setup-isolated-setup-install` and continue (do not block
 upgrade — secure-agent setup is independent of framework
 upgrade). The recap row in Step 8's output goes under a new
 `Sandbox allowlist:` section.
@@ -592,7 +615,7 @@ The [PonyMail](../../tools/ponymail/tool.md) and
 servers are installed from a local `apache/comdev` checkout and are
 **tracked at `main`, not pinned** (no tagged releases — contrast
 the cooldown-pinned system tools in the secure-setup update flow).
-An ASF adopter running `/magpie-setup upgrade` should refresh that
+An ASF adopter running `setup upgrade` should refresh that
 checkout in the same pass, so it does not silently rot between
 framework upgrades.
 
@@ -657,7 +680,7 @@ snapshot symlink [`worktree-init`](worktree-init.md) seeds
 visible to every worktree immediately; a worktree that predates a
 newly-`provides`-d source skill picks up its per-worktree symlink
 on its next `worktree-init` or
-`/magpie-setup verify --auto-fix-symlinks`.
+`setup verify --auto-fix-symlinks`.
 
 ## Step 6g — Re-derive auto-sourced configuration fields (drift reconciliation)
 
@@ -734,7 +757,7 @@ Worktrees (worktree-init was run on each, idempotently):
 Sandbox allowlist (sandbox-add-project-root.sh --all-worktrees):
   ✓ already covers this project + N worktrees   OR
   + <list of <worktree>/.claude/settings.local.json files updated>   OR
-  ⚠ helper not installed — run /magpie-setup-isolated-setup-install
+  ⚠ helper not installed — run setup-isolated-setup-install
 
 Overrides:
   ✓ <list of overrides whose target is unchanged>
@@ -748,7 +771,7 @@ Framework templates (projects/_template/):
   → file an issue against apache/magpie to upstream a fix
 
 Recommended follow-ups:
-  - Run /magpie-setup-isolated-setup-update if the secure-setup blast
+  - Run setup-isolated-setup-update if the secure-setup blast
     radius (settings.json, agent-isolation/, pinned-versions.toml)
     appears in the diff.
   - Open .apache-magpie-overrides/<name>.md for any ⚠ entry above.
@@ -757,7 +780,7 @@ Recommended follow-ups:
 ## Failure modes
 
 - **`<committed-lock>` missing** → repo not adopted; suggest
-  `/magpie-setup install`.
+  `setup install`.
 - **Network failure** → stop, surface error, user retries.
   The skill never leaves a half-deleted snapshot — Step 3's
   `rm -rf` runs only after Step 2's user confirmation.

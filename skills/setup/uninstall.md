@@ -34,6 +34,18 @@ This sub-action is destructive on disk and on the index. It
 always surfaces the full removal plan first and requires one
 explicit confirmation before any write.
 
+> **Scope: the pinned snapshot install only.** A **marketplace**
+> install — the default path — put nothing in the repo, so there
+> is nothing here to reverse: it is removed with the client's own
+> verb (`/plugin uninstall <plugin>@apache-magpie` in Claude
+> Code, `codex plugin uninstall magpie`,
+> `gemini extensions uninstall magpie`). If the repo has no
+> `.apache-magpie.lock` and Magpie is plugin-installed, print
+> that command instead of a removal plan and stop. When **both**
+> installs are live, this sub-action removes only the repo-side
+> one — say so explicitly, so the user is not surprised that the
+> skills are still there afterwards.
+
 ## When to use
 
 - The project decided to stop using apache-magpie.
@@ -43,8 +55,16 @@ explicit confirmation before any write.
   is being cleaned up before merge.
 
 If the goal is to **change install method or version**, use
-[`/magpie-setup upgrade`](upgrade.md) instead — that path
+[`setup upgrade`](upgrade.md) instead — that path
 preserves overrides and re-uses the existing wiring.
+
+If the goal is to **move from the snapshot install to the
+marketplace install** (the common direction — the project no
+longer needs a committed pin), this is the right sub-action: run
+it, then install the plugins per
+[`install.md` → Marketplace install](install.md#marketplace-install--the-default-path).
+Doing it in that order avoids the double-install trap in
+[`SKILL.md` Golden rule 10](SKILL.md#golden-rules).
 
 If the goal is to **temporarily detach for debugging** (e.g.
 test what a skill looks like without overrides), edit the
@@ -71,7 +91,7 @@ relevant override file rather than unadopting.
    > Unadoption removes the shared snapshot every worktree
    > points at; running from a worktree would leave the main
    > and other worktrees in a half-removed state. From the
-   > main: `cd <main-path> && /magpie-setup unadopt`. To
+   > main: `cd <main-path> && setup unadopt`. To
    > undo just this worktree's symlink without touching the
    > main, `rm <worktree>/.apache-magpie` manually."*
 
@@ -82,7 +102,7 @@ relevant override file rather than unadopting.
    present. If missing, the repo is not adopted — surface and
    stop. (If only the snapshot is present without a committed
    lock, the adopter ran the install recipe but never
-   completed `/magpie-setup install`; treat that as not-yet-
+   completed `setup install`; treat that as not-yet-
    adopted and stop with the same message.)
 5. Compute the **active target set** per
    [`agents.md`](agents.md): the canonical `.agents/skills/`, the
@@ -251,7 +271,7 @@ pointing at a deleted snapshot.
    for the exact text). If the hook contains additional adopter
    logic, surface that, leave the hook in place, and tell the
    user which lines to delete by hand. Hooks that still contain
-   the obsolete `/magpie-setup verify --auto-fix-symlinks` line
+   the obsolete `setup verify --auto-fix-symlinks` line
    (a Claude Code slash command that does not work from a shell
    hook — removed in a later framework release) should be
    replaced with the current Step 10 template.
@@ -304,7 +324,7 @@ pointing at a deleted snapshot.
    `.agents/skills/magpie-setup/` and its relay symlinks
    `.claude/skills/magpie-setup` and `.github/skills/magpie-setup`.
    After this step the running skill has deleted its own committed
-   source. Future invocations of `/magpie-setup` will
+   source. Future invocations of `setup` will
    resolve to nothing — the adopter has to re-run the
    install recipe in
    [`docs/setup/install-recipes.md`](../../docs/setup/install-recipes.md)
@@ -404,7 +424,7 @@ need a human re-read.
 ## Failure modes
 
 - **`<committed-lock>` missing** → repo not adopted. Stop
-  with a pointer at `/magpie-setup install`.
+  with a pointer at `setup install`.
 - **`<snapshot-dir>/` contains committed content**
   (anti-pattern: adopter put real files inside the
   gitignored snapshot path before adoption) → surface, do
