@@ -59,6 +59,13 @@ New to AI, or to these words? Here is what they mean in Magpie:
 - **Prompt**: the written instructions you give the model.
 - **Skill**: a text file that tells the agent how to do one job, with
   instructions and examples. In Magpie, writing skills is the main work.
+- **MCP server**: a small running program that connects an agent to one
+  external service — like GitHub, Slack, or Gmail — using a shared set of
+  rules (the Model Context Protocol, or MCP) instead of custom one-off code
+  for each service. The agent acts as a *client*: it sends the MCP server
+  requests like "list open issues" or "post this message," and the server
+  carries that action out against the real service. Agents find the right
+  MCP server through a config file the runtime reads at startup.
 - **Deterministic and probabilistic**: normal code is *deterministic*, so the
   same input always gives the same result. An agent is *probabilistic*, so the
   same input can give slightly different results each time.
