@@ -73,6 +73,12 @@ and the large multi-step security skills go much higher —
 `security-issue-sync` ~36K. This overhead applies before any
 project-specific content is read.
 
+Security draft pre-flight also loads the shared CC-resolution rule from
+`tools/mail-source/contract.md`: approximately 600 additional tokens once
+per run, estimated from the rule's prose and configuration identifiers.
+It reuses already-loaded project/organization configuration and adds no
+mail or tracker calls, so the per-mode ranges below remain unchanged.
+
 ### Model classes
 
 Skills are written against a capability contract, not a vendor.
